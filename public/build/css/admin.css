@@ -1,0 +1,760 @@
+/* Admin panel layout */
+body.admin-panel .admin-header .main-menu-wrapper {
+    display: none !important;
+}
+
+body.admin-panel .admin-header #mobile_btn {
+    display: none;
+}
+
+body.admin-panel .admin-user-nav .dark-mode-toggle,
+body.admin-panel .admin-user-menu .night-mode,
+body.admin-panel .admin-user-menu a.dropdown-item:not(.admin-logout-btn) {
+    display: none !important;
+}
+
+body.admin-panel .admin-logout-form {
+    margin: 0;
+}
+
+body.admin-panel .admin-logout-btn {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: right;
+    cursor: pointer;
+}
+
+body.admin-panel .admin-logout-btn:hover {
+    color: #f66962;
+}
+
+body.admin-panel .page-content {
+    padding: 30px 0 50px;
+}
+
+body.admin-panel .admin-page-title {
+    margin-bottom: 24px;
+}
+
+body.admin-panel .admin-page-title h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+body.admin-panel .admin-page-title p {
+    color: #685f78;
+    margin: 0;
+}
+
+/* Breadcrumb trail: الرئيسية - لوحة التحكم (RTL) */
+body.admin-panel .admin-page-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    content: none !important;
+    display: none !important;
+}
+
+body.admin-panel .admin-page-breadcrumb .breadcrumb-separator {
+    display: flex;
+    align-items: center;
+    padding: 0 0.5rem;
+    color: #ff4667;
+    font-weight: 600;
+    list-style: none;
+}
+
+body.admin-panel .admin-page-breadcrumb .breadcrumb-separator::before {
+    content: none !important;
+}
+
+body.admin-panel .admin-card {
+    border: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+body.admin-panel .admin-card-header h4 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+body.admin-panel .admin-alert {
+    margin-bottom: 20px;
+}
+
+body.admin-panel .admin-data-table .table {
+    direction: rtl;
+    text-align: right;
+}
+
+body.admin-panel .admin-data-table .table th {
+    background: #f8f9fb;
+    color: #002058;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: right;
+}
+
+body.admin-panel .admin-data-table .table td {
+    text-align: right;
+}
+
+body.admin-panel .admin-data-table .table td {
+    vertical-align: middle;
+}
+
+body.admin-panel .admin-table-scroll-wrap {
+    position: relative;
+}
+
+body.admin-panel .admin-table-scroll-top {
+    display: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 14px;
+    margin-bottom: 6px;
+    direction: ltr;
+}
+
+body.admin-panel .admin-table-scroll-wrap.admin-table-scroll-active .admin-table-scroll-top {
+    display: block;
+}
+
+body.admin-panel .admin-table-scroll-top-inner {
+    height: 1px;
+    pointer-events: none;
+}
+
+body.admin-panel .admin-table-scroll-body {
+    overflow-x: auto;
+    direction: ltr;
+}
+
+body.admin-panel .admin-pagination {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e8e8f0;
+}
+
+body.admin-panel .admin-pagination-summary {
+    font-size: 14px;
+    color: #685f78;
+}
+
+body.admin-panel .admin-per-page-form {
+    font-size: 14px;
+}
+
+body.admin-panel .admin-per-page-select {
+    width: auto;
+    min-width: 72px;
+}
+
+body.admin-panel .admin-page-links .page-link {
+    color: #002058;
+    border-radius: 6px;
+    margin: 0 2px;
+}
+
+body.admin-panel .admin-page-links .page-item.active .page-link {
+    background-color: #ff5364;
+    border-color: #ff5364;
+}
+
+body.admin-panel .admin-search-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #002058;
+}
+
+body.admin-panel .admin-search-filters .form-label {
+    font-weight: 600;
+    color: #22100d;
+}
+
+body.admin-panel .admin-context-notice {
+    border: 0;
+    background: #eef5ff;
+    color: #002058;
+    font-size: 15px;
+    border-radius: 8px;
+}
+
+body.admin-panel .admin-context-notice strong {
+    color: #ff5364;
+}
+
+body.admin-panel .admin-table-html {
+    max-width: 320px;
+    word-break: break-word;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+body.admin-panel .admin-reset-views-form .btn-danger {
+    font-weight: 600;
+}
+
+body.admin-panel .admin-dropzone {
+    border: 2px dashed #d4d4e8;
+    border-radius: 8px;
+    background: #fafbff;
+    min-height: 140px;
+}
+
+body.admin-panel .admin-dropzone .dz-message {
+    margin: 2em 0;
+}
+
+body.admin-panel .admin-dropzone .dropzone-msg-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #002058;
+    margin-bottom: 6px;
+}
+
+body.admin-panel .admin-dropzone .dropzone-msg-desc {
+    color: #685f78;
+    font-size: 13px;
+}
+
+body.admin-panel .admin-dropzone-hidden-inputs {
+    display: none;
+}
+
+/* Video upload progress (500MB+ chunked) */
+body.admin-panel .admin-video-upload-progress {
+    margin-top: 12px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    background: #f0f4ff;
+    border: 1px solid #d4d4e8;
+}
+
+body.admin-panel .admin-video-progress-bar {
+    height: 22px;
+    border-radius: 6px;
+    background: #e2e8f8;
+    overflow: hidden;
+}
+
+body.admin-panel .admin-video-progress-bar .progress-bar {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 22px;
+    transition: width 0.25s ease;
+}
+
+body.admin-panel .admin-video-progress-text {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #002058;
+}
+
+body.admin-panel .admin-video-progress-merge {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #685f78;
+    font-style: italic;
+}
+
+body.admin-panel .admin-dropzone .dz-preview .dz-progress {
+    height: 18px;
+    border-radius: 4px;
+    margin-top: 8px;
+    background: #e2e8f8;
+}
+
+body.admin-panel .admin-dropzone .dz-preview .dz-upload {
+    background: linear-gradient(90deg, #392c7d, #5b4bb4);
+}
+
+body.admin-panel .admin-dropzone .dz-preview .dz-progress .dz-upload {
+    transition: width 0.25s ease;
+}
+
+/* Upload toast notifications */
+body.admin-panel .admin-upload-notify-container {
+    position: fixed;
+    top: 88px;
+    left: 24px;
+    z-index: 1090;
+    width: min(380px, calc(100vw - 48px));
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+body.admin-panel .admin-upload-notify-alert {
+    margin: 0;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    pointer-events: auto;
+    animation: adminUploadNotifyIn 0.3s ease;
+}
+
+body.admin-panel .admin-upload-notify-hide {
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+body.admin-panel .admin-upload-complete-banner {
+    margin-top: 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+body.admin-panel .admin-upload-complete-file {
+    font-family: monospace;
+    font-size: 13px;
+    word-break: break-all;
+}
+
+body.admin-panel .admin-lesson-video-player video,
+body.admin-panel .admin-lesson-video-element {
+    max-height: 520px;
+    background: #000;
+}
+
+body.admin-panel .admin-lesson-view-video {
+    padding: 16px;
+    border-radius: 8px;
+    background: #fafbff;
+    border: 1px solid #e8e8f0;
+}
+
+body.admin-panel .admin-detail-box {
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #f8f9fc;
+    border: 1px solid #e8e8f0;
+}
+
+body.admin-panel .admin-detail-label {
+    display: block;
+    font-size: 12px;
+    color: #685f78;
+    margin-bottom: 4px;
+}
+
+body.admin-panel .admin-detail-value {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #002058;
+}
+
+body.admin-panel .admin-lesson-video-meta code {
+    font-size: 12px;
+    color: #392c7d;
+}
+
+body.admin-panel .admin-lesson-view-section {
+    padding: 16px;
+    border-radius: 8px;
+    background: #fafbff;
+    border: 1px solid #e8e8f0;
+}
+
+body.admin-panel .admin-lesson-thumbnail-preview {
+    max-width: 420px;
+}
+
+body.admin-panel .admin-lesson-thumbnail-img {
+    width: 100%;
+    max-height: 280px;
+    object-fit: cover;
+    border: 1px solid #e8e8f0;
+    background: #fff;
+}
+
+body.admin-panel .admin-lesson-images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+}
+
+body.admin-panel .admin-lesson-image-card {
+    border: 1px solid #e8e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+body.admin-panel .admin-lesson-image-link {
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #f3f4f8;
+}
+
+body.admin-panel .admin-lesson-image-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+}
+
+body.admin-panel .admin-lesson-image-link:hover .admin-lesson-image-thumb {
+    transform: scale(1.03);
+}
+
+body.admin-panel .admin-lesson-image-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+}
+
+body.admin-panel .admin-lesson-file-name {
+    font-size: 12px;
+    color: #392c7d;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body.admin-panel .admin-lesson-file-size {
+    font-size: 11px;
+    color: #685f78;
+}
+
+body.admin-panel .admin-lesson-pdf-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+body.admin-panel .admin-lesson-pdf-item {
+    border: 1px solid #e8e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+body.admin-panel .admin-lesson-pdf-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #f8f9fc;
+    border-bottom: 1px solid #e8e8f0;
+}
+
+body.admin-panel .admin-lesson-pdf-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+body.admin-panel .admin-lesson-pdf-icon {
+    font-size: 22px;
+    color: #392c7d;
+    flex-shrink: 0;
+}
+
+body.admin-panel .admin-lesson-pdf-name {
+    display: block;
+    font-size: 14px;
+    color: #002058;
+    word-break: break-all;
+}
+
+body.admin-panel .admin-lesson-pdf-frame {
+    display: block;
+    width: 100%;
+    height: 480px;
+    border: 0;
+    background: #fff;
+}
+
+body.admin-panel .admin-csv-display,
+body.admin-panel .admin-lesson-csv-value {
+    font-family: monospace;
+    font-size: 12px;
+    word-break: break-all;
+}
+
+body.admin-panel .admin-student-avatar {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border: 2px solid #e8e8f0;
+}
+
+@keyframes adminUploadNotifyIn {
+    from {
+        opacity: 0;
+        transform: translateX(-16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Bootstrap collapse — admin sidebar accordion */
+body.admin-panel .admin-sidebar-widget .admin-sidebar-menu {
+    padding: 0;
+}
+
+body.admin-panel .admin-sidebar-accordion {
+    --bs-accordion-border-width: 0;
+    --bs-accordion-border-radius: 0;
+    --bs-accordion-inner-border-radius: 0;
+    --bs-accordion-btn-padding-x: 16px;
+    --bs-accordion-btn-padding-y: 14px;
+    --bs-accordion-body-padding-x: 16px;
+    --bs-accordion-body-padding-y: 0;
+    --bs-accordion-active-color: #392c7d;
+    --bs-accordion-active-bg: #fafbff;
+    --bs-accordion-btn-focus-box-shadow: none;
+}
+
+body.admin-panel .admin-sidebar-accordion-item {
+    border: 0;
+    border-bottom: 1px solid #eef0f5;
+    background: transparent;
+}
+
+body.admin-panel .admin-sidebar-accordion-item:last-child {
+    border-bottom: 0;
+}
+
+body.admin-panel .admin-sidebar-accordion .accordion-header {
+    margin: 0;
+}
+
+body.admin-panel .admin-sidebar-heading.accordion-button {
+    font-size: 18px;
+    font-weight: 600;
+    color: #002058;
+    background: #fff;
+    box-shadow: none;
+    text-align: right;
+}
+
+body.admin-panel .admin-sidebar-heading.accordion-button:not(.collapsed) {
+    color: #392c7d;
+    background: #fafbff;
+}
+
+body.admin-panel .admin-sidebar-heading.accordion-button:hover {
+    color: #ff4667;
+    background: #fafbff;
+}
+
+body.admin-panel .admin-sidebar-heading.accordion-button::after {
+    margin-right: auto;
+    margin-left: 0;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23002058'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+body.admin-panel .admin-sidebar-heading.accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23392c7d'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+body.admin-panel .admin-sidebar-body {
+    padding: 0 16px 14px;
+}
+
+body.admin-panel .admin-sidebar-links {
+    display: block;
+    list-style: none;
+    margin: 0 !important;
+    padding: 0;
+    border: 0;
+}
+
+body.admin-panel .admin-sidebar-links .nav-item {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+body.admin-panel .admin-sidebar-links .nav-item:last-child {
+    margin-bottom: 0;
+}
+
+body.admin-panel .admin-sidebar-links .nav-link {
+    color: #685f78;
+    font-size: 15px;
+    font-weight: 400;
+    padding: 4px 0;
+    border: 0;
+    display: flex;
+    align-items: center;
+}
+
+body.admin-panel .admin-sidebar-links .nav-link i {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+body.admin-panel .admin-sidebar-links .nav-item:hover .nav-link,
+body.admin-panel .admin-sidebar-links .nav-item.active .nav-link {
+    color: #ff4667;
+}
+
+body.admin-panel .admin-sidebar-accordion-item.has-active > .accordion-header .accordion-button {
+    color: #392c7d;
+}
+
+/* Student panel — fixed navbar clearance (no breadcrumb bar like admin) */
+body.admin-panel.student-panel .main-wrapper {
+    padding-top: 96px;
+}
+
+body.admin-panel.student-panel .page-content {
+    padding-top: 32px;
+    padding-bottom: 50px;
+}
+
+body.admin-panel.student-panel .admin-user-menu a.dropdown-item:not(.admin-logout-btn) {
+    display: block !important;
+}
+
+body.admin-panel.student-panel .admin-sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+body.admin-panel.student-panel .admin-sidebar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: #392c7d;
+    margin-bottom: 4px;
+}
+
+body.admin-panel.student-panel .admin-sidebar-nav .nav-link.active,
+body.admin-panel.student-panel .admin-sidebar-nav .nav-link:hover {
+    background: #f5f5fc;
+    color: #ff4667;
+}
+
+body.admin-panel.student-panel .admin-sidebar-card {
+    margin-bottom: 24px;
+}
+
+body.admin-panel.student-panel .admin-sidebar-card .profile-img {
+    margin-top: 8px;
+}
+
+body.admin-panel.student-panel .student-checkin-barcode-card {
+    text-align: center;
+}
+
+body.admin-panel.student-panel .student-checkin-barcode-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #392c7d;
+}
+
+body.admin-panel.student-panel .student-checkin-barcode-wrap {
+    width: 100%;
+    padding: 16px 10px;
+    background: #fff;
+    border: 1px dashed #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+body.admin-panel.student-panel .student-checkin-barcode {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 160px;
+    margin: 0 auto;
+    object-fit: contain;
+}
+
+body.admin-panel.student-panel .student-checkin-barcode-code {
+    margin-top: 14px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: #392c7d;
+}
+
+body.admin-panel.student-panel .student-exam-page .page-content {
+    padding-top: 24px;
+}
+
+body.admin-panel.student-panel .student-exam-timer {
+    margin-top: 8px;
+}
+
+body.admin-panel.student-panel .student-exam-progress .progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+body.admin-panel.student-panel .student-exam-answer-option {
+    display: block;
+    padding: 10px 12px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+body.admin-panel.student-panel .student-exam-answer-option:hover {
+    background: #f8f9fa;
+}
+
+body.admin-panel.student-panel .student-exam-result-item {
+    background: #fafafa;
+}
+
+@media (max-width: 991.98px) {
+    body.admin-panel.student-panel .student-checkin-barcode-section {
+        width: 100vw;
+        max-width: 100vw;
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
+    }
+
+    body.admin-panel.student-panel .student-checkin-barcode-section.admin-card {
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    body.admin-panel.student-panel .student-checkin-barcode-section-body {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    body.admin-panel.student-panel .student-checkin-barcode-wrap {
+        padding: 14px 6px;
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+    }
+
+    body.admin-panel.student-panel .student-checkin-barcode {
+        min-height: 200px;
+    }
+
+    body.admin-panel.student-panel .main-wrapper {
+        padding-top: 80px;
+    }
+
+    body.admin-panel.student-panel .page-content {
+        padding-top: 20px;
+    }
+}

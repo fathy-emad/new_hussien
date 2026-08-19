@@ -1,0 +1,94 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('website_page_sections', function (Blueprint $table) {
+            $table->id();
+            $table->string('section_key', 100)->unique();
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
+            $table->json('extra')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
+        });
+
+        $now = now();
+
+        DB::table('website_page_sections')->insert([
+            [
+                'section_key' => 'hero',
+                'title' => 'منصة مستر حسين التعليمية',
+                'description' => 'دروس أونلاين و Offline، امتحانات، ومتابعة مستمرة لمساعدتك على التفوق في مادتك.',
+                'extra' => null,
+                'is_active' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'section_key' => 'why_us',
+                'title' => 'لماذا تختار مستر حسين؟',
+                'description' => 'تجربة تعليمية متكامة تجمع بين الشرح المبسّط، المتابعة، والامتحانات الإلكترونية.',
+                'extra' => json_encode([
+                    'points' => [
+                        'شرح مبسّط يركز على الفهم والتطبيق',
+                        'متابعة مستمرة للطلاب داخل السنتر وأونلاين',
+                        'امتحانات إلكترونية وتقارير أداء',
+                        'دروس Offline متاحة في أي وقت',
+                    ],
+                    'side_image' => null,
+                ], JSON_UNESCAPED_UNICODE),
+                'is_active' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'section_key' => 'trending_offline',
+                'title' => 'دروس Offline المتاحة',
+                'description' => 'استكشف أحدث الدروس Offline المفعّلة على المنصة.',
+                'extra' => null,
+                'is_active' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'section_key' => 'featured_students',
+                'title' => 'طلاب متميزون',
+                'description' => 'نفتخر بطلابنا المتميزين الذين يحققون نتائج رائعة مع مستر حسين.',
+                'extra' => json_encode(['images' => []], JSON_UNESCAPED_UNICODE),
+                'is_active' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'section_key' => 'reviews',
+                'title' => 'آراء الطلاب',
+                'description' => 'اطلع على تجارب طلابنا الحقيقية مع مستر حسين.',
+                'extra' => null,
+                'is_active' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'section_key' => 'centers',
+                'title' => 'سناترنا',
+                'description' => 'تعرف على مواقع سناتر مستر حسين وعناوينها.',
+                'extra' => null,
+                'is_active' => true,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+        ]);
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('website_page_sections');
+    }
+};

@@ -1,0 +1,561 @@
+/**
+ * Dreams LMS — Arabic RTL overrides
+ * Loaded after style.css; works with Bootstrap 5.3 RTL.
+ */
+
+html[dir="rtl"],
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Auth pages (admin/student login) — full-screen, no site header/footer */
+html[dir="rtl"] body.auth-page {
+  overflow-x: hidden;
+}
+
+html[dir="rtl"] body.auth-page .main-wrapper.log-wrap {
+  min-height: 100vh;
+  width: 100%;
+}
+
+html[dir="rtl"] body.auth-page .auth-login-row {
+  min-height: 100vh;
+  margin: 0;
+}
+
+html[dir="rtl"] body.auth-page .login-wrap-bg,
+html[dir="rtl"] body.auth-page .login-bg {
+  min-height: 100vh;
+}
+
+html[dir="rtl"] body.auth-page .login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Password field: show/hide icon on the left (RTL) so it does not overlap text */
+html[dir="rtl"] .pass-group .toggle-password {
+  right: auto;
+  left: 17px;
+}
+
+html[dir="rtl"] .pass-group .pass-input,
+html[dir="rtl"] .pass-group input[type="password"],
+html[dir="rtl"] .pass-group input[type="text"].pass-input {
+  padding-left: 48px;
+  padding-right: 15px;
+}
+
+html[dir="rtl"] .pass-group .pass-checked {
+  right: auto;
+  left: 40px;
+}
+
+/* Arabic-friendly font stack */
+html[dir="rtl"] body {
+  font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
+}
+
+/* Header & navigation — desktop */
+@media (min-width: 992px) {
+  html[dir="rtl"] .header-nav .container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  html[dir="rtl"] .navbar-header {
+    flex-shrink: 0;
+    margin-inline-end: 24px;
+  }
+
+  html[dir="rtl"] .logo {
+    margin-right: 0;
+    margin-left: 0;
+    width: auto;
+    max-width: 180px;
+  }
+
+  html[dir="rtl"] .logo img,
+  html[dir="rtl"] .menu-logo img,
+  html[dir="rtl"] .footer-logo img {
+    max-height: 52px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  html[dir="rtl"] .main-menu-wrapper {
+    flex: 1 1 auto;
+    position: static;
+    transform: none;
+    width: auto;
+    left: auto;
+    right: auto;
+    min-width: 0;
+  }
+
+  html[dir="rtl"] .main-nav {
+    justify-content: flex-start;
+  }
+
+  html[dir="rtl"] .main-nav > li {
+    margin-right: 0;
+    margin-left: 15px;
+  }
+
+  html[dir="rtl"] .main-nav > li:last-child {
+    margin-left: 0;
+  }
+
+  html[dir="rtl"] .main-nav > li > a > i {
+    margin-left: 0;
+    margin-right: 3px;
+  }
+
+  html[dir="rtl"] .main-nav li > ul,
+  html[dir="rtl"] .main-nav .submenu {
+    left: auto;
+    right: 0;
+  }
+
+  html[dir="rtl"] .main-nav > li .submenu > li .submenu {
+    left: auto;
+    right: 100%;
+  }
+
+  html[dir="rtl"] .main-nav li .submenu a:hover {
+    padding-left: 15px;
+    padding-right: 20px;
+  }
+
+  html[dir="rtl"] .main-nav li .submenu::before {
+    left: auto;
+    right: 45px;
+  }
+
+  html[dir="rtl"] .header-navbar-rht {
+    flex-shrink: 0;
+    margin-inline-start: auto;
+  }
+}
+
+html[dir="rtl"] .header-navbar-rht > li {
+  padding-right: 0;
+  padding-left: 20px;
+}
+
+html[dir="rtl"] .header-navbar-rht li:last-child {
+  padding-left: 0;
+}
+
+html[dir="rtl"] .main-nav > li .submenu > li.has-submenu > a::after {
+  content: "\f053";
+  right: auto;
+  left: 15px;
+}
+
+html[dir="rtl"] .header .has-arrow .dropdown-toggle:after {
+  border-right: 0;
+  border-left: 2px solid #757575;
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+html[dir="rtl"] .header-two .main-nav .has-submenu.menu-effect > a::after {
+  left: auto;
+  right: 0;
+}
+
+/* Mobile slide-in menu only (do not apply transform on desktop) */
+@media (max-width: 991.98px) {
+  html[dir="rtl"] #mobile_btn {
+    margin-right: 0;
+    margin-left: 30px;
+  }
+
+  html[dir="rtl"] .logo {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  html[dir="rtl"] .main-menu-wrapper {
+    left: auto;
+    right: 0;
+    transform: translateX(260px);
+  }
+
+  html[dir="rtl"] .menu-opened .main-menu-wrapper {
+    transform: translateX(0);
+  }
+
+  html[dir="rtl"] .sidebar-overlay {
+    left: auto;
+    right: 0;
+  }
+
+  html[dir="rtl"] .bar-icon span {
+    float: right;
+  }
+}
+
+/* Owl Carousel navigation */
+html[dir="rtl"] .top-category-slider .owl-nav .owl-prev {
+  left: auto;
+  right: -20px;
+}
+
+html[dir="rtl"] .top-category-slider .owl-nav .owl-next {
+  right: auto;
+  left: -20px;
+}
+
+html[dir="rtl"] .real-reviews .owl-nav button.owl-next {
+  margin-left: 0;
+  margin-right: 10px;
+}
+
+html[dir="rtl"] .real-reviews .owl-nav button.owl-next span,
+html[dir="rtl"] .real-reviews .owl-nav button.owl-prev span {
+  padding-left: 0;
+  padding-right: 6px;
+}
+
+html[dir="rtl"] .owl-carousel .owl-nav button.owl-prev i,
+html[dir="rtl"] .owl-carousel .owl-nav button.owl-next i {
+  transform: scaleX(-1);
+}
+
+/* Select2 */
+html[dir="rtl"] .select2-container--default .select2-selection--single .select2-selection__arrow {
+  right: auto;
+  left: 1px;
+}
+
+html[dir="rtl"] .select2-container--default .select2-selection--single .select2-selection__rendered {
+  padding-right: 8px;
+  padding-left: 20px;
+  text-align: right;
+}
+
+html[dir="rtl"] .select2-dropdown {
+  text-align: right;
+}
+
+/* Chat layout */
+html[dir="rtl"] .left-sidebar,
+html[dir="rtl"] .left-sidebar-wrap {
+  border-left: 0;
+  border-right: 1px solid #e0e0e0;
+}
+
+html[dir="rtl"] .main-chat-blk .top-contacts-box .profile-img.online:before {
+  right: auto;
+  left: 0;
+  transform: translateX(50%);
+}
+
+/* Back / directional icons */
+html[dir="rtl"] .back-link i.bx-left-arrow-alt,
+html[dir="rtl"] .bx-left-arrow-alt.back-icon {
+  transform: scaleX(-1);
+  display: inline-block;
+}
+
+/* Bootstrap Tagsinput */
+html[dir="rtl"] .bootstrap-tagsinput .tag {
+  margin-right: 0;
+  margin-left: 2px;
+}
+
+/* Slick slider */
+html[dir="rtl"] .slick-slide {
+  float: right;
+}
+
+/* Datetimepicker / daterangepicker alignment */
+html[dir="rtl"] .bootstrap-datetimepicker-widget {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .daterangepicker {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .daterangepicker .drp-calendar.left {
+  float: right;
+}
+
+html[dir="rtl"] .daterangepicker .drp-calendar.right {
+  float: left;
+}
+
+/* Dashboard sidebar sections */
+html[dir="rtl"] .settings-sidebar ul li a {
+  padding-left: 15px;
+  padding-right: 20px;
+}
+
+html[dir="rtl"] .settings-sidebar ul li a i,
+html[dir="rtl"] .instructor-sidebar ul li a i,
+html[dir="rtl"] .student-sidebar ul li a i {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+/* Invoice & tables */
+html[dir="rtl"] .invoice-table th,
+html[dir="rtl"] .invoice-table td {
+  text-align: right;
+}
+
+/* CKEditor */
+html[dir="rtl"] .cke_chrome {
+  direction: rtl;
+}
+
+/* AOS: mirror horizontal animations */
+html[dir="rtl"] [data-aos^="fade-left"] {
+  transform: translate3d(50px, 0, 0);
+}
+
+html[dir="rtl"] [data-aos^="fade-right"] {
+  transform: translate3d(-50px, 0, 0);
+}
+
+html[dir="rtl"] [data-aos="fade-left"].aos-animate,
+html[dir="rtl"] [data-aos^="fade-left"].aos-animate {
+  transform: translate3d(0, 0, 0);
+}
+
+html[dir="rtl"] [data-aos="fade-right"].aos-animate,
+html[dir="rtl"] [data-aos^="fade-right"].aos-animate {
+  transform: translate3d(0, 0, 0);
+}
+
+/* Breadcrumb (breadcrumb-bar-info) — RTL separator between items */
+html[dir="rtl"] .breadcrumb-bar.breadcrumb-bar-info .page-breadcrumb .breadcrumb-item + .breadcrumb-item {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+html[dir="rtl"] .breadcrumb-bar.breadcrumb-bar-info .page-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  content: " - " !important;
+  background: none !important;
+  width: auto !important;
+  height: auto !important;
+  position: static !important;
+  display: inline-block !important;
+  transform: none !important;
+  left: auto !important;
+  right: auto !important;
+  padding: 0 0.5rem !important;
+  margin: 0 !important;
+  color: #ff4667 !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  font-family: inherit !important;
+  font-weight: 600 !important;
+  vertical-align: baseline !important;
+}
+
+/* Default page breadcrumb chevron → dash in RTL */
+html[dir="rtl"] .page-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  content: " - " !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: 600 !important;
+  line-height: inherit !important;
+  color: #ff4667 !important;
+  padding: 0 0.5rem !important;
+}
+
+html[dir="rtl"] .breadcrumb-item + .breadcrumb-item {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Website navbar — flat section links */
+html[dir="rtl"] .website-main-nav > li > a {
+  font-weight: 600;
+}
+
+html[dir="rtl"] .website-main-nav > li.active > a,
+html[dir="rtl"] .website-main-nav > li > a:hover {
+  color: #392c7d;
+}
+
+/* Anchor scroll offset for fixed header */
+#hero,
+#stats,
+#why-us,
+#offline,
+#featured-students,
+#reviews,
+#centers {
+  scroll-margin-top: 100px;
+}
+
+/* Homepage — reviews section (standalone) */
+.home-reviews-section {
+  padding: 56px 0;
+  background-color: #f5f7fb;
+}
+
+.home-reviews-section .section-sub-head span {
+  color: #392c7d;
+}
+
+.home-reviews-carousel {
+  margin-top: 32px;
+}
+
+.home-reviews-section .review {
+  position: relative;
+  bottom: auto;
+  width: 100%;
+}
+
+.home-review-card {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 28px;
+  border: 1px solid #e9ecef;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(57, 44, 125, 0.08);
+  text-align: center;
+}
+
+.home-review-quote img {
+  width: 36px;
+  height: auto;
+  margin-bottom: 16px;
+}
+
+.home-review-text {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #22100d;
+  margin-bottom: 24px;
+}
+
+.home-review-author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: start;
+}
+
+.home-review-author img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.home-review-author h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: #392c7d;
+}
+
+.home-review-author span {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.home-reviews-section .slick-prev,
+.home-reviews-section .slick-next {
+  z-index: 2;
+}
+
+.home-reviews-single .slick-dots {
+  display: none !important;
+}
+
+/* Homepage — centers section (standalone) */
+.home-centers-section {
+  padding: 56px 0 64px;
+  background-color: #fff;
+  border-top: 1px solid #e9ecef;
+}
+
+.home-centers-section .section-sub-head span {
+  color: #392c7d;
+}
+
+.home-centers-carousel {
+  margin-top: 32px;
+}
+
+.home-center-card {
+  border: 1px solid #e9ecef;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(57, 44, 125, 0.06);
+}
+
+.home-center-phone {
+  gap: 8px;
+  color: #392c7d;
+  text-decoration: none;
+}
+
+.home-center-phone:hover {
+  color: #ff4667;
+}
+
+/* Offline lesson cards — "فتح الدرس" on visual left (RTL) */
+html[dir="rtl"] .offline-lesson-card .product-content {
+  display: flex;
+  flex-direction: column;
+}
+
+html[dir="rtl"] .offline-lesson-card .offline-open-lesson-btn {
+  align-self: flex-end;
+  width: fit-content;
+  margin-top: auto;
+}
+
+/* Stats counter separator — number & label on visual left (RTL) */
+html[dir="rtl"] .home-stats-separator .online-course {
+  justify-content: flex-start;
+}
+
+html[dir="rtl"] .home-stats-separator .course-inner-content {
+  margin-left: 0;
+  margin-inline-end: 20px;
+  margin-inline-start: auto;
+  text-align: left;
+}
+
+html[dir="rtl"] .home-stats-separator .course-inner-content h4,
+html[dir="rtl"] .home-stats-separator .course-inner-content p {
+  text-align: left;
+}
+
+/* Offline section header — "جميع الدروس" on visual left (RTL) */
+html[dir="rtl"] .home-offline-section-header {
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+html[dir="rtl"] .home-offline-section-header .all-btn {
+  margin-left: 0;
+  margin-right: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+html[dir="rtl"] .home-offline-section-header .section-sub-head {
+  text-align: right;
+}
