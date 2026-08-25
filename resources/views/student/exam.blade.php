@@ -24,7 +24,7 @@
                                     @if ($tested)
                                         انتهى يوم الامتحان — تظهر الإجابات الصحيحة باللون الأخضر.
                                     @else
-                                        انتهى وقت الامتحان — لا يمكن تعديل الإجابات.
+                                        انتهى وقت الامتحان — لا يمكن تعديل الإجابات، وتظهر الإجابات الصحيحة باللون الأخضر.
                                     @endif
                                 </div>
                             @else
@@ -36,10 +36,12 @@
                                             style="width: 100%"
                                             aria-valuemin="0"
                                             aria-valuemax="100"
+                                            data-remaining-seconds="{{ $remainingSeconds }}"
                                         >
                                             المتبقي
-                                            <strong class="ms-1" data-change>{{ $remainingMinutes }}</strong>
-                                            دقيقة
+                                            <strong class="ms-1" data-change>
+                                                {{ sprintf('%02d:%02d:%02d', intdiv($remainingSeconds, 3600), intdiv($remainingSeconds % 3600, 60), $remainingSeconds % 60) }}
+                                            </strong>
                                         </div>
                                     </div>
                                 </div>
@@ -93,7 +95,7 @@
                                                     @checked((string) $index === (string) $card['selected_answer'])
                                                     @disabled($readonly)
                                                 >
-                                                <span class="form-check-label {{ $tested && (string) $index === (string) $question->correct_answer ? 'text-success fw-semibold' : '' }}">
+                                                <span class="form-check-label {{ $showCorrectAnswers && (string) $index === (string) $question->correct_answer ? 'text-success fw-semibold' : '' }}">
                                                     {{ $answer }}
                                                 </span>
                                             </label>

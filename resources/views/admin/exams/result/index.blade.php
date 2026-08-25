@@ -129,6 +129,8 @@
                                     :data-rows="$dataRows"
                                     :paginator="$students"
                                     view-route="admin.exams.result.view"
+                                    delete-route="admin.exams.result.delete"
+                                    delete-confirm="هل أنت متأكد من حذف نتيجة هذا الطالب؟ لن يتم حذف الطالب أو الامتحان."
                                     :view-confirm="null"
                                     empty-message="{{ ! empty($searchParams['code']) ? 'لا يوجد طالب بهذا الكود في هذا الصف.' : 'لا يوجد طلاب في هذا الصف.' }}"
                                 />

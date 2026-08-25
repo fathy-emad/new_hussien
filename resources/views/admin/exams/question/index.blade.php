@@ -51,6 +51,8 @@
                                     :paginator="$questions"
                                     view-route="admin.exams.question.view"
                                     edit-route="admin.exams.question.edit"
+                                    delete-route="admin.exams.question.delete"
+                                    delete-confirm="هل أنت متأكد من حذف هذا السؤال؟ لن يتم الحذف إذا كان مستخدماً في امتحان أو نتيجة."
                                     :view-confirm="null"
                                     empty-message="لا توجد أسئلة لهذا الصف."
                                 />

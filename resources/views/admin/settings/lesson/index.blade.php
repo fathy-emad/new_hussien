@@ -67,6 +67,8 @@
                                     :paginator="$lessons"
                                     view-route="admin.settings.lesson.view"
                                     edit-route="admin.settings.lesson.edit"
+                                    delete-route="admin.settings.lesson.delete"
+                                    delete-confirm="هل أنت متأكد من حذف هذا الدرس وملفاته وسجل مشاهداته؟"
                                     empty-message="لا توجد دروس لهذا الفصل."
                                 />
                             </div>

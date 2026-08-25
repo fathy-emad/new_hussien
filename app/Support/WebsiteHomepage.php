@@ -74,12 +74,12 @@ class WebsiteHomepage
 
     public static function siteLogo(): string
     {
-        return asset('/build/img/logo/master-hussien-logo.png');
+        return self::versionedAsset('/build/img/logo/master-hussien-logo.png');
     }
 
     public static function siteIcon(): string
     {
-        return asset('/build/img/logo/master-hussien-icon.png');
+        return self::versionedAsset('/build/img/logo/master-hussien-icon.png');
     }
 
     public static function offlineLessonLogo(): string
@@ -159,5 +159,13 @@ class WebsiteHomepage
         }
 
         return asset('/build/img/user/user-17.jpg');
+    }
+
+    private static function versionedAsset(string $path): string
+    {
+        $absolutePath = public_path(ltrim($path, '/'));
+        $version = is_file($absolutePath) ? filemtime($absolutePath) : time();
+
+        return asset($path).'?v='.$version;
     }
 }

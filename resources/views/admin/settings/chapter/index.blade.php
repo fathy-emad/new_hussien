@@ -55,6 +55,8 @@
                                     :data-rows="$dataRows"
                                     :paginator="$chapters"
                                     edit-route="admin.settings.chapter.edit"
+                                delete-route="admin.settings.chapter.delete"
+                                delete-confirm="هل أنت متأكد من حذف هذا الفصل؟ لن يتم الحذف إذا كان يحتوي على دروس."
                                     empty-message="لا توجد فصول لهذا البحث."
                                 />
                             </div>

@@ -37,7 +37,9 @@ class Student extends Authenticatable
         'material_four',
         'batch',
         'title',
-        'password'
+        'password',
+        'created_by',
+        'updated_by',
     ];
 
     /**

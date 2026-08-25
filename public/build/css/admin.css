@@ -758,3 +758,90 @@ body.admin-panel.student-panel .student-exam-result-item {
         padding-top: 20px;
     }
 }
+
+body.admin-panel .admin-noti-nav {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+}
+
+body.admin-panel .admin-noti-toggle {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #0A2E6C;
+    font-size: 22px;
+}
+
+body.admin-panel .admin-noti-toggle::after {
+    display: none;
+}
+
+body.admin-panel .admin-noti-badge {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: #f66962;
+    color: #fff;
+    font-size: 10px;
+    line-height: 18px;
+    text-align: center;
+}
+
+body.admin-panel .admin-noti-menu {
+    width: 360px;
+    max-width: calc(100vw - 24px);
+    padding: 0;
+    overflow: hidden;
+}
+
+body.admin-panel .admin-noti-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-bottom: 1px solid #eee;
+}
+
+body.admin-panel .admin-noti-list {
+    max-height: 360px;
+    overflow-y: auto;
+}
+
+body.admin-panel .admin-noti-empty {
+    padding: 18px 14px;
+}
+
+body.admin-panel .admin-noti-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    border-bottom: 1px solid #f2f2f2;
+    color: inherit;
+    text-decoration: none;
+}
+
+body.admin-panel .admin-noti-item:hover {
+    background: #f8f9fb;
+}
+
+body.admin-panel .admin-noti-item.is-unread {
+    background: #eef5ff;
+}
+
+body.admin-panel .admin-noti-item span {
+    color: #685f78;
+    font-size: 13px;
+}
+
+body.admin-panel .admin-noti-item small {
+    color: #9a93a8;
+}

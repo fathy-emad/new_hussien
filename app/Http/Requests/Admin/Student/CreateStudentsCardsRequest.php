@@ -22,7 +22,7 @@ class CreateStudentsCardsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "count" => "required|integer",
+            "count" => "required|integer|min:1|max:5000",
             "title" => "required|string",
             'academic_year' => ['required', 'digits:4'],
             'classroom' => ['required', 'in:1,2,3'],
@@ -34,7 +34,9 @@ class CreateStudentsCardsRequest extends FormRequest
     {
         return [
             "count.required" => "العدد مطلوب",
-            "count.integer" => "العدد يجب ان يكون رقم"
+            "count.integer" => "العدد يجب ان يكون رقم",
+            "count.min" => "العدد يجب ان يكون 1 على الأقل",
+            "count.max" => "العدد الأقصى 5000 كارت في المرة الواحدة",
         ];
     }
 }

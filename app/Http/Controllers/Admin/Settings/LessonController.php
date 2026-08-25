@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -119,7 +120,7 @@ class LessonController extends Controller
                 $dataRows[$key][] = $lesson->updatedBy->name ?? 'لا يوجد';
                 $dataRows[$key][] = [
                     'id' => $lesson->id,
-                    'delete' => false,
+                    'delete' => true,
                     'view' => true,
                     'edit' => true,
                 ];
@@ -356,5 +357,44 @@ class LessonController extends Controller
             'chapter_id' => $chapter->id,
             'classroom' => $chapter->classroom,
         ])->with('success', 'تم ضبط مصنع المشاهدات لفصل '.$chapter->title.' بنجاح');
+    }
+
+    public function delete($id): RedirectResponse
+    {
+        $lesson = Lesson::with('chapter')->findOrFail($id);
+        $searchParams = [
+            'chapter_id' => $lesson->chapter_id,
+            'classroom' => $lesson->chapter?->classroom,
+        ];
+
+        DB::transaction(function () use ($lesson) {
+            $lesson->views()->delete();
+            $lesson->delete();
+        });
+
+        $video = normalizeStoredFilename($lesson->link);
+        if ($video) {
+            VideoStorage::delete(VideoStorage::FOLDER_LESSONS, $video);
+        }
+
+        $this->deleteLessonUploads('lessons/images', array_merge(
+            explodeUploadedFilenames($lesson->images),
+            explodeUploadedFilenames($lesson->thumbnail)
+        ));
+        $this->deleteLessonUploads('lessons/files', explodeUploadedFilenames($lesson->pdf));
+
+        return redirect()
+            ->route('admin.settings.lesson.index', $searchParams)
+            ->with('success', 'تم حذف الدرس وملفاته المرتبطة بنجاح');
+    }
+
+    private function deleteLessonUploads(string $folder, array $files): void
+    {
+        foreach (array_unique($files) as $fileName) {
+            $path = $folder.'/'.basename($fileName);
+            if (Storage::disk('uploads')->exists($path)) {
+                Storage::disk('uploads')->delete($path);
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ use App\Models\Exam;
 use App\Models\ExamStudent;
 use App\Models\Student;
 use App\Support\ExamStudentScoring;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\View\View;
@@ -120,7 +121,7 @@ class ResultController extends Controller
             $dataRows[$key][] = $attended;
             $dataRows[$key][] = [
                 'id' => $viewId,
-                'delete' => false,
+                'delete' => (bool) $viewId,
                 'view' => (bool) $viewId,
                 'edit' => false,
                 'viewLabel' => 'عرض',
@@ -138,6 +139,13 @@ class ResultController extends Controller
             'exam' => $exam,
             'examStats' => $examStats,
         ]);
+    }
+
+    public function delete($id): RedirectResponse
+    {
+        ExamStudent::findOrFail($id)->delete();
+
+        return redirect()->back()->with('success', 'تم حذف نتيجة الطالب بنجاح دون حذف الطالب أو الامتحان');
     }
 
     private function displayAnswer(array $answers, mixed $index): string

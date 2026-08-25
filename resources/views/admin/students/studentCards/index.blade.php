@@ -24,6 +24,11 @@
                 <div class="col-xl-9 col-lg-9">
                     @include('components.admin-alerts')
 
+                    <div id="createCardsQueuedAlert" class="alert alert-success alert-dismissible fade show admin-alert d-none" role="alert">
+                        سيتم إشعارك بعد تجهيز ملف التحميل.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
                     @if ($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show admin-alert" role="alert">
                             @foreach ($errors->all() as $error)
@@ -45,7 +50,7 @@
                             <div class="admin-card-header d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
                                 <div>
                                     <h4 class="mb-1">جميع الباتشات (Batches)</h4>
-                                    <p class="text-muted mb-0">إدارة كروت الطلاب وتوليدها وتحميلها</p>
+                                    <p class="text-muted mb-0">إدارة كروت الطلاب وتحميلها</p>
                                 </div>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCardBatchModal">
                                     <i class="bx bx-plus"></i> إنشاء Batch جديد
@@ -56,7 +61,6 @@
                                 :data-lables="$dataLables"
                                 :data-rows="$dataRows"
                                 :paginator="$batches"
-                                view-route="admin.students.studentCards.view"
                                 delete-route="admin.students.studentCards.delete"
                                 download-route="admin.students.studentCards.download"
                                 delete-confirm="هل أنت متأكد من حذف هذا الباتش وجميع الكروت المرتبطة به؟"
@@ -72,7 +76,7 @@
     <div class="modal fade" id="createCardBatchModal" tabindex="-1" aria-labelledby="createCardBatchModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form method="POST" action="{{ route('admin.students.studentCards.create') }}">
+                <form id="createCardBatchForm" method="POST" action="{{ route('admin.students.studentCards.create') }}">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="createCardBatchModalLabel">إنشاء Batch جديد</h5>
@@ -149,23 +153,77 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">إلغاء</button>
-                        <button type="submit" class="btn btn-primary">إنشاء كروت للطلاب</button>
+                        <button type="submit" class="btn btn-primary" id="createCardBatchSubmit">إنشاء كروت للطلاب</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    @if ($errors->any())
-        @push('scripts')
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const modal = document.getElementById('createCardBatchModal');
-                    if (modal) {
-                        new bootstrap.Modal(modal).show();
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const modalEl = document.getElementById('createCardBatchModal');
+                const form = document.getElementById('createCardBatchForm');
+                const submitBtn = document.getElementById('createCardBatchSubmit');
+                const queuedAlert = document.getElementById('createCardsQueuedAlert');
+
+                form?.addEventListener('submit', function () {
+                    if (!form.checkValidity()) {
+                        return;
+                    }
+
+                    const modal = bootstrap.Modal.getInstance(modalEl) || (modalEl ? new bootstrap.Modal(modalEl) : null);
+                    modal?.hide();
+                    queuedAlert?.classList.remove('d-none');
+                    queuedAlert?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
                     }
                 });
-            </script>
-        @endpush
-    @endif
+
+                @if ($errors->any())
+                    if (modalEl) {
+                        new bootstrap.Modal(modalEl).show();
+                    }
+                @endif
+
+                const zipStatusUrl = @json(route('admin.students.studentCards.zip-status'));
+
+                async function refreshDownloadButtons() {
+                    const buttons = Array.from(document.querySelectorAll('[data-card-download]'));
+                    if (!buttons.length) {
+                        return;
+                    }
+
+                    const batches = buttons.map(function (button) {
+                        return button.getAttribute('data-card-download');
+                    });
+                    const query = batches.map(function (batch) {
+                        return 'batches[]=' + encodeURIComponent(batch);
+                    }).join('&');
+
+                    try {
+                        const response = await fetch(zipStatusUrl + '?' + query, {
+                            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                            credentials: 'same-origin'
+                        });
+                        if (!response.ok) {
+                            return;
+                        }
+                        const payload = await response.json();
+                        const ready = new Set((payload.ready || []).map(String));
+                        buttons.forEach(function (button) {
+                            const isReady = ready.has(String(button.getAttribute('data-card-download')));
+                            button.classList.toggle('d-none', !isReady);
+                        });
+                    } catch (e) {}
+                }
+
+                refreshDownloadButtons();
+                setInterval(refreshDownloadButtons, 8000);
+            });
+        </script>
+    @endpush
 @endsection

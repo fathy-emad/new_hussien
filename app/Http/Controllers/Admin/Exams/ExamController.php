@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ExamController extends Controller
@@ -161,10 +162,14 @@ class ExamController extends Controller
     {
         $model = Exam::findOrFail($id);
         $classroom = $model->classroom;
-        $model->delete();
+
+        DB::transaction(function () use ($model) {
+            DB::table('exam_students')->where('exam_id', $model->id)->delete();
+            $model->delete();
+        });
 
         return redirect()
             ->route('admin.exams.exam.index', ['classroom' => $classroom])
-            ->with('success', 'تم حذف الامتحان بنجاح');
+            ->with('success', 'تم حذف الامتحان ونتائجه التابعة بنجاح');
     }
 }

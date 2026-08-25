@@ -13,6 +13,7 @@ Route::prefix('exams')->name('exams.')->group(function () {
         Route::post('create', 'create')->name('create.submit');
         Route::get('edit/{id}', 'edit')->name('edit');
         Route::post('update/{id}', 'update')->name('update');
+        Route::post('delete/{id}', 'delete')->name('delete');
     });
 
     Route::prefix('exam')->name('exam.')->controller(ExamController::class)->group(function () {
@@ -28,5 +29,6 @@ Route::prefix('exams')->name('exams.')->group(function () {
     Route::prefix('result')->name('result.')->controller(ResultController::class)->group(function () {
         Route::get('view/{id}', 'view')->name('view');
         Route::get('index', 'index')->name('index');
+        Route::post('delete/{id}', 'delete')->name('delete');
     });
 });

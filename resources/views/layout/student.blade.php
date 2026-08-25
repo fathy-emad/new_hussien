@@ -28,7 +28,7 @@
                             </span>
                         </a>
                         <a href="{{ route('student.dashboard') }}" class="navbar-brand logo">
-                            <img src="{{ URL::asset('/build/img/logo.svg') }}" class="img-fluid" alt="Logo">
+                            <img src="{{ \App\Support\WebsiteHomepage::siteLogo() }}" class="img-fluid" alt="حسين فايز">
                         </a>
                     </div>
 

@@ -35,6 +35,9 @@ Route::prefix('admin')->name('admin.')->group(function (){
         Route::post('removeFileUploaded', [FilesUpload::class, 'removeFileUploaded'])->name('removeFileUploaded');
         Route::get('video/preview', [VideoStreamController::class, 'adminPreview'])->name('video.preview');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('notifications', [\App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notifications.index');
+        Route::post('notifications/read-all', [\App\Http\Controllers\Admin\NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+        Route::post('notifications/{id}/read', [\App\Http\Controllers\Admin\NotificationController::class, 'markAsRead'])->name('notifications.read');
         Route::get('csrf-token', fn () => response()->json(['token' => csrf_token()]))->name('csrf-token');
         Route::post('logout', [Authentication::class, 'logout'])->name('logout');
         require __DIR__ . '/admin_settings.php';

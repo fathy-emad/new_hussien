@@ -15,7 +15,7 @@
             <div class="loginbox">
                 <div class="w-100">
                     <div class="img-logo">
-                        <img src="{{ URL::asset('/build/img/logo.svg') }}" class="img-fluid" alt="Logo">
+                        <img src="{{ \App\Support\WebsiteHomepage::siteLogo() }}" class="img-fluid" alt="حسين فايز">
                         @if ($backUrl)
                             <div class="back-home">
                                 <a href="{{ $backUrl }}">{{ $backLabel }}</a>

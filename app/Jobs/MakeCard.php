@@ -17,22 +17,29 @@ class MakeCard implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, Batchable;
 
     // ------- BARCODE controls -------
-    private const BARCODE_W         = 1800; // final footprint width (px)
-    private const BARCODE_H         = 120;  // final footprint height (px)
-    private const BARCODE_OFFSET_X  = -220;    // nudge after centering (left = negative)
-    private const BARCODE_OFFSET_Y  = 75;    // nudge after centering (down = positive)
+    private const BARCODE_W         = 1500; // final footprint width (px)
+    private const BARCODE_H         = 150;  // final footprint height (px)
+    private const BARCODE_OFFSET_X  = 170;    // nudge after centering (left = negative)
+    private const BARCODE_OFFSET_Y  = -120;    // nudge after centering (down = positive)
 
-    // ------- TEXT controls (your values preserved) -------
-    private const ID_LABEL_PAD      = 100;  // reserved for the blue "ID" chip
-    private const ID_TEXT_SIZE      = 70;   // fixed font size
-    private const ID_TEXT_OFFSET_X  = -170; // nudge after centering
-    private const ID_TEXT_OFFSET_Y  =  85;  // nudge after centering
+    // ------- CODE (ID) controls — independent of password -------
+    private const CODE_LABEL_PAD    = 100;  // skip the green "ID" chip
+    private const CODE_TEXT_SIZE    = 55;
+    private const CODE_OFFSET_X     = 150; // left = negative, right = positive
+    private const CODE_OFFSET_Y     =  -10;  // up = negative, down = positive
+
+    // ------- PASSWORD controls — independent of code -------
+    private const PASSWORD_LABEL_PAD = 180; // skip the green "PASSWORD" chip
+    private const PASSWORD_TEXT_SIZE = 42;
+    private const PASSWORD_OFFSET_X  = 100;   // left = negative, right = positive
+    private const PASSWORD_OFFSET_Y  = 20;   // up = negative, down = positive
 
     public function __construct(
         public int $studentId,
         public string $templatePath,
         public string $outDir,
-        public ?string $fontPath = null
+        public ?string $fontPath = null,
+        public ?string $plainPassword = null
     ) {}
 
     public function handle(): void
@@ -55,10 +62,18 @@ class MakeCard implements ShouldQueue
             'h' => (int) round($H * 0.125),
         ];
 
-        // ID bar (long white box with the blue “ID” label at left)
+        // ID bar (white box next to the green “ID” label)
         $idBar = [
             'x' => (int) round($W * 0.145),
             'y' => (int) round($H * 0.620),
+            'w' => (int) round($W * 0.430),
+            'h' => (int) round($H * 0.085),
+        ];
+
+        // Password bar (white box next to the green “PASSWORD” label)
+        $passBar = [
+            'x' => (int) round($W * 0.145),
+            'y' => (int) round($H * 0.752),
             'w' => (int) round($W * 0.430),
             'h' => (int) round($H * 0.085),
         ];
@@ -107,14 +122,12 @@ class MakeCard implements ShouldQueue
 
         $text = (string) $student->code;
 
-        // usable region (skip the “ID” chip area)
-        $useX = $idBar['x'] + self::ID_LABEL_PAD;
+        $useX = $idBar['x'] + self::CODE_LABEL_PAD;
         $useY = $idBar['y'];
-        $useW = $idBar['w'] - self::ID_LABEL_PAD;
+        $useW = $idBar['w'] - self::CODE_LABEL_PAD;
         $useH = $idBar['h'];
 
-        // measure text at fixed size (no auto-shrink)
-        $fontSize = self::ID_TEXT_SIZE;
+        $fontSize = self::CODE_TEXT_SIZE;
         $tw = (int) round($useW * 0.5);
         $th = (int) round($useH * 0.8);
         if ($fontPath && function_exists('imagettfbbox')) {
@@ -123,17 +136,48 @@ class MakeCard implements ShouldQueue
             $th  = abs($box[7] - $box[1]);
         }
 
-        // center within usable region, then apply nudges
-        $textX = (int) floor($useX + ($useW - $tw) / 2) + self::ID_TEXT_OFFSET_X;
-        $textY = (int) floor($useY + ($useH - $th) / 2) + self::ID_TEXT_OFFSET_Y;
+        $textX = (int) floor($useX + ($useW - $tw) / 2) + self::CODE_OFFSET_X;
+        $textY = (int) floor($useY + ($useH - $th) / 2) + self::CODE_OFFSET_Y;
 
         $card->text($text, $textX, $textY, function ($font) use ($fontSize, $fontPath) {
             if ($fontPath) $font->file($fontPath);
             $font->size($fontSize);
             $font->color('#0A2E6C');
-            $font->align('left'); // top-left anchor computed above
+            $font->align('left');
             $font->valign('top');
         });
+
+        /* ---------- PASSWORD TEXT (own offsets, no extra box/label) ---------- */
+
+        $plainPassword = (string) ($this->plainPassword ?? '');
+        if ($plainPassword !== '') {
+            $passUseX = $passBar['x'] + self::PASSWORD_LABEL_PAD;
+            $passUseY = $passBar['y'];
+            $passUseW = $passBar['w'] - self::PASSWORD_LABEL_PAD;
+            $passUseH = $passBar['h'];
+
+            $passSize = self::PASSWORD_TEXT_SIZE;
+            $pw = (int) round($passUseW * 0.5);
+            $ph = (int) round($passUseH * 0.8);
+            if ($fontPath && function_exists('imagettfbbox')) {
+                $pbox = imagettfbbox($passSize, 0, $fontPath, $plainPassword);
+                $pw = abs($pbox[2] - $pbox[0]);
+                $ph = abs($pbox[7] - $pbox[1]);
+            }
+
+            $passX = (int) floor($passUseX + ($passUseW - $pw) / 2) + self::PASSWORD_OFFSET_X;
+            $passY = (int) floor($passUseY + ($passUseH - $ph) / 2) + self::PASSWORD_OFFSET_Y;
+
+            $card->text($plainPassword, $passX, $passY, function ($font) use ($passSize, $fontPath) {
+                if ($fontPath) {
+                    $font->file($fontPath);
+                }
+                $font->size($passSize);
+                $font->color('#0A2E6C');
+                $font->align('left');
+                $font->valign('top');
+            });
+        }
 
         /* ---------- SAVE ---------- */
 

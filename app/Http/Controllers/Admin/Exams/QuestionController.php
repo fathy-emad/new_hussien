@@ -6,10 +6,13 @@ use App\Http\Controllers\Concerns\PaginatesAdminTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Exams\CreateEditQuestionRequest;
 use App\Models\BankQuestion;
+use App\Models\Exam;
+use App\Models\ExamStudent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -74,7 +77,7 @@ class QuestionController extends Controller
             $dataRows[$key][] = $question->updatedBy->name ?? '—';
             $dataRows[$key][] = [
                 'id' => $question->id,
-                'delete' => false,
+                'delete' => true,
                 'view' => true,
                 'edit' => true,
             ];
@@ -155,6 +158,45 @@ class QuestionController extends Controller
         return redirect()
             ->route('admin.exams.question.index', ['classroom' => $model->classroom])
             ->with('success', 'تم تعديل السؤال بنجاح');
+    }
+
+    public function delete($id): RedirectResponse
+    {
+        $question = BankQuestion::findOrFail($id);
+
+        $usedByExam = Exam::query()
+            ->whereJsonContains('questions', (int) $question->id)
+            ->orWhereJsonContains('questions', (string) $question->id)
+            ->exists();
+
+        $usedByResult = ExamStudent::query()
+            ->select(['id', 'questionsAnswers'])
+            ->cursor()
+            ->contains(function (ExamStudent $result) use ($question) {
+                return collect($result->questionsAnswers ?? [])->contains(
+                    fn ($answer) => (string) ($answer['question'] ?? '') === (string) $question->id
+                );
+            });
+
+        if ($usedByExam || $usedByResult) {
+            return redirect()
+                ->route('admin.exams.question.index', ['classroom' => $question->classroom])
+                ->with('error', 'لا يمكن حذف السؤال لأنه مستخدم في امتحان أو نتيجة طالب.');
+        }
+
+        $images = explodeUploadedFilenames($question->image);
+        $question->delete();
+
+        foreach ($images as $image) {
+            $path = 'exams/questions/images/'.basename($image);
+            if (Storage::disk('uploads')->exists($path)) {
+                Storage::disk('uploads')->delete($path);
+            }
+        }
+
+        return redirect()
+            ->route('admin.exams.question.index', ['classroom' => $question->classroom])
+            ->with('success', 'تم حذف السؤال بنجاح');
     }
 
     private function questionImages(BankQuestion $question): array

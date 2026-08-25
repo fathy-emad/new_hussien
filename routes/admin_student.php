@@ -31,7 +31,7 @@ Route::prefix('students')->name('students.')->group(function (){
     Route::prefix('studentCards')->name('studentCards.')->group(function (){
         Route::get('index', [StudentCardsController::class, 'index'])->name('index');
         Route::post('create', [StudentCardsController::class, 'create'])->name('create');
-        Route::get('view/{batch}', [StudentCardsController::class, 'view'])->name('view');
+        Route::get('zip-status', [StudentCardsController::class, 'zipStatus'])->name('zip-status');
         Route::post('delete/{batch}', [StudentCardsController::class, 'delete'])->name('delete');
         Route::get('download/{batch}', [StudentCardsController::class, 'download'])->name('download');
     });

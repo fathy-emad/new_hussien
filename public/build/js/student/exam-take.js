@@ -12,13 +12,25 @@
             return;
         }
 
-        const examTime = parseInt($('[data-exam-time]').attr('data-exam-time'), 10) || 0;
-        let change = parseInt($('[data-change]').text(), 10) || 0;
         const progressBar = $('.student-exam-progress .progress-bar');
+        const totalSeconds = (parseInt($('[data-exam-time]').attr('data-exam-time'), 10) || 0) * 60;
+        const initialRemaining = parseInt(progressBar.attr('data-remaining-seconds'), 10) || 0;
         const submitUrl = form.data('submit-url');
         const examsUrl = form.data('exams-url');
-        const updateInterval = 60000;
+        const deadline = Date.now() + (initialRemaining * 1000);
+        const updateInterval = 1000;
         let interval;
+        let finalSubmitted = false;
+
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+
+            return [hours, minutes, secs]
+                .map(function (part) { return String(part).padStart(2, '0'); })
+                .join(':');
+        }
 
         function setProgressBarWidth(percentage, isFinal) {
             progressBar.css('width', percentage + '%');
@@ -26,19 +38,22 @@
             if (isFinal) {
                 progressBar.removeClass('progress-bar-animated');
                 progressBar.css('background-color', '#dc3545');
-                $('[data-change]').text('0');
+                $('[data-change]').text('00:00:00');
             }
         }
 
         function updateProgress() {
-            if (change > 0) {
-                const percentage = ((examTime - change) / examTime) * 100;
-                setProgressBarWidth(percentage, false);
-                $('[data-change]').text(change);
-                change--;
-            } else {
+            const remaining = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+            const percentage = totalSeconds > 0
+                ? Math.max(0, Math.min(100, (remaining / totalSeconds) * 100))
+                : 0;
+
+            $('[data-change]').text(formatTime(remaining));
+            setProgressBarWidth(percentage, remaining === 0);
+
+            if (remaining === 0 && !finalSubmitted) {
+                finalSubmitted = true;
                 clearInterval(interval);
-                setProgressBarWidth(100, true);
                 form.find('input[type=radio]').prop('disabled', true);
                 submitData(true);
             }
@@ -72,8 +87,7 @@
         interval = setInterval(updateProgress, updateInterval);
 
         $(window).on('resize', function () {
-            const percentage = change > 0 ? ((examTime - change) / examTime) * 100 : 100;
-            setProgressBarWidth(percentage, change === 0);
+            updateProgress();
         });
 
         form.on('change', 'input[type=radio]', function () {

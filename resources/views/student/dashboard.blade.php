@@ -64,6 +64,53 @@
 
                     <div class="card admin-card mt-4">
                         <div class="card-body">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                                <h5 class="mb-0">آخر نتائج الامتحانات</h5>
+                                <a href="{{ route('student.exams') }}" class="btn btn-sm btn-outline-primary">كل الامتحانات</a>
+                            </div>
+
+                            @if ($examResults->isEmpty())
+                                <p class="text-muted mb-0">لا توجد نتائج امتحانات مكتملة حتى الآن.</p>
+                            @else
+                                <div class="table-responsive">
+                                    <table class="table table-bordered align-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>الامتحان</th>
+                                                <th>الدرجة</th>
+                                                <th>النسبة</th>
+                                                <th>الحالة</th>
+                                                <th>التفاصيل</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($examResults as $examResult)
+                                                <tr>
+                                                    <td>{{ $examResult->title }}</td>
+                                                    <td>{{ $examResult->score_details['degree_label'] }}</td>
+                                                    <td>{{ $examResult->score_details['percentage'] }}%</td>
+                                                    <td><span class="badge {{ $examResult->status_badge }}">{{ $examResult->status_label }}</span></td>
+                                                    <td>
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-sm btn-outline-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#exam-result-modal-{{ $examResult->id }}"
+                                                        >
+                                                            عرض الإجابات
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="card admin-card mt-4">
+                        <div class="card-body">
                             <h5 class="mb-3">بيانات سريعة</h5>
                             <div class="row g-3">
                                 <div class="col-md-4">
@@ -112,4 +159,11 @@
             </div>
         </div>
     </div>
+
+    @foreach ($examResults as $examResult)
+        @include('components.student-exam-result-modal', [
+            'exam' => $examResult,
+            'score' => $examResult->score_details,
+        ])
+    @endforeach
 @endsection

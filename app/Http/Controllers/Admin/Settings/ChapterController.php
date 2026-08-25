@@ -74,7 +74,7 @@ class ChapterController extends Controller
                 $dataRows[$key][] = $chapter->updatedBy->name ?? 'لا يوجد';
                 $dataRows[$key][] = [
                     'id' => $chapter->id,
-                    'delete' => false,
+                    'delete' => true,
                     'view' => false,
                     'edit' => true,
                 ];
@@ -144,5 +144,26 @@ class ChapterController extends Controller
             'academic_year' => $request->academic_year,
             'classroom' => $request->classroom,
         ])->with('success', 'تم تعديل الفصل بنجاح');
+    }
+
+    public function delete($id): RedirectResponse
+    {
+        $chapter = LessonsHeader::findOrFail($id);
+        $searchParams = [
+            'academic_year' => $chapter->academic_year,
+            'classroom' => $chapter->classroom,
+        ];
+
+        if ($chapter->lessons()->exists()) {
+            return redirect()
+                ->route('admin.settings.chapter.index', $searchParams)
+                ->with('error', 'لا يمكن حذف الفصل لأنه يحتوي على دروس. احذف الدروس أولاً.');
+        }
+
+        $chapter->delete();
+
+        return redirect()
+            ->route('admin.settings.chapter.index', $searchParams)
+            ->with('success', 'تم حذف الفصل بنجاح');
     }
 }

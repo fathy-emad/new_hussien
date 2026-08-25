@@ -62,9 +62,7 @@
                             @endif
 
                             <p class="mb-1"><span class="text-muted">إجابتك:</span> {{ $detail['student_answer'] }}</p>
-                            @if ($exam->status === 'completed')
-                                <p class="mb-0"><span class="text-muted">الإجابة الصحيحة:</span> <span class="text-success">{{ $detail['correct_answer'] }}</span></p>
-                            @endif
+                            <p class="mb-0"><span class="text-muted">الإجابة الصحيحة:</span> <span class="text-success fw-semibold">{{ $detail['correct_answer'] }}</span></p>
                         </div>
                     @endforeach
                 </div>

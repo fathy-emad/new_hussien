@@ -34,9 +34,10 @@
                             <td>
                                 @if (is_array($cell) && array_key_exists('id', $cell))
                                     <div class="admin-table-actions d-flex flex-wrap gap-1">
-                                        @if (($cell['download'] ?? false) && $downloadRoute)
+                                        @if ($downloadRoute && (($cell['download'] ?? false) || ($cell['awaitDownload'] ?? false)))
                                             <a href="{{ route($downloadRoute, $cell['id']) }}"
-                                                class="btn btn-sm btn-outline-success">
+                                                class="btn btn-sm btn-outline-success {{ ($cell['download'] ?? false) ? '' : 'd-none' }}"
+                                                @if ($cell['awaitDownload'] ?? false) data-card-download="{{ $cell['id'] }}" @endif>
                                                 <i class="bx bx-download"></i> تحميل
                                             </a>
                                         @endif

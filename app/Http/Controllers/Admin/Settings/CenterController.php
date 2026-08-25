@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class CenterController extends Controller
@@ -46,7 +47,7 @@ class CenterController extends Controller
             $dataRows[$key][] = $center->updated_at ? $center->updated_at->format('d M Y - H:i:s') : null;
             $dataRows[$key][] = [
                 'id' => $center->id,
-                'delete' => false,
+                'delete' => true,
                 'view' => false,
                 'edit' => true,
             ];
@@ -94,5 +95,26 @@ class CenterController extends Controller
         $center->created_at = $created_at;
         $center->save();
         return redirect()->route('admin.settings.center.index')->with('success', __('validation.update.success'));
+    }
+
+    public function delete($id): RedirectResponse
+    {
+        $center = Place::findOrFail($id);
+        $hasStudents = DB::table('students')->where('center_id', $center->id)->exists();
+        $hasSchedules = DB::table('schedules')->where('center_id', $center->id)->exists();
+        $hasAttendance = DB::table('student_attendances')->where('center_id', $center->id)->exists();
+
+        if ($hasStudents || $hasSchedules || $hasAttendance) {
+            return redirect()->back()->with(
+                'error',
+                'لا يمكن حذف السنتر لأنه مرتبط بطلاب أو جداول حصص أو سجلات حضور. انقل البيانات المرتبطة أولاً.'
+            );
+        }
+
+        $center->delete();
+
+        return redirect()
+            ->route('admin.settings.center.index')
+            ->with('success', 'تم حذف السنتر بنجاح');
     }
 }

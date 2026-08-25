@@ -109,15 +109,16 @@ class ExamStudentScoring
 
     public static function remainingMinutes(ExamStudent $examStudent): int
     {
+        return (int) ceil(self::remainingSeconds($examStudent) / 60);
+    }
+
+    public static function remainingSeconds(ExamStudent $examStudent): int
+    {
         if (! $examStudent->finished) {
             return 0;
         }
 
-        if (now()->getTimestamp() >= $examStudent->finished->getTimestamp()) {
-            return 0;
-        }
-
-        return (int) now()->diffInMinutes($examStudent->finished) + 1;
+        return max(0, $examStudent->finished->getTimestamp() - now()->getTimestamp());
     }
 
     /**

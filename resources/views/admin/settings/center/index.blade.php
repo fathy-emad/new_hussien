@@ -38,6 +38,8 @@
                                 :data-rows="$dataRows"
                                 :paginator="$centers"
                                 edit-route="admin.settings.center.edit"
+                                delete-route="admin.settings.center.delete"
+                                delete-confirm="هل أنت متأكد من حذف هذا السنتر؟ لن يتم الحذف إذا كان مرتبطاً بطلاب أو جداول."
                                 empty-message="لا توجد سناتر مسجلة حالياً."
                             />
                         </div>

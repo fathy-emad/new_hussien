@@ -317,10 +317,16 @@ class StudentManageController extends Controller
         $student = Student::findOrFail($id);
         $searchParams = $this->searchParamsFromStudent($student);
 
-        $student->delete();
+        DB::transaction(function () use ($student) {
+            DB::table('exam_students')->where('student_id', $student->id)->delete();
+            DB::table('student_attendances')->where('student_id', $student->id)->delete();
+            DB::table('views')->where('student_id', $student->id)->delete();
+            DB::table('website_reviews')->where('student_id', $student->id)->delete();
+            $student->delete();
+        });
 
         return redirect()->route('admin.students.studentManage.index', $searchParams)
-            ->with('success', 'تم حذف الطالب بنجاح');
+            ->with('success', 'تم حذف الطالب وبياناته التابعة بنجاح');
     }
 
     private function searchParamsFromStudent(Student $student): array

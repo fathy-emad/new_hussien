@@ -390,6 +390,12 @@ html[dir="rtl"] .website-main-nav > li > a:hover {
   color: #392c7d;
 }
 
+html.dark[dir="rtl"] .website-main-nav > li > a,
+html.dark[dir="rtl"] .website-main-nav > li.active > a,
+html.dark[dir="rtl"] .website-main-nav > li > a:hover {
+  color: #ffffff !important;
+}
+
 /* Anchor scroll offset for fixed header */
 #hero,
 #stats,
@@ -511,6 +517,45 @@ html[dir="rtl"] .website-main-nav > li > a:hover {
 
 .home-center-phone:hover {
   color: #ff4667;
+}
+
+/* Homepage reviews and centers — dark mode */
+html.dark[dir="rtl"] .home-reviews-section,
+html.dark[dir="rtl"] .home-centers-section {
+  background-color: #0f0c1c;
+  border-color: #2b2838;
+}
+
+html.dark[dir="rtl"] .home-review-card,
+html.dark[dir="rtl"] .home-center-card {
+  background-color: #2b2838;
+  border-color: #3b364a;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+html.dark[dir="rtl"] .home-center-card .instructors-img.bg-light {
+  background-color: #211d30 !important;
+}
+
+html.dark[dir="rtl"] .home-reviews-section .section-sub-head span,
+html.dark[dir="rtl"] .home-centers-section .section-sub-head span {
+  color: #f66962;
+}
+
+html.dark[dir="rtl"] .home-review-text,
+html.dark[dir="rtl"] .home-review-author h3,
+html.dark[dir="rtl"] .home-center-card h5,
+html.dark[dir="rtl"] .home-center-card p,
+html.dark[dir="rtl"] .home-center-phone {
+  color: #efeff2;
+}
+
+html.dark[dir="rtl"] .home-review-author span {
+  color: #b9b7c0;
+}
+
+html.dark[dir="rtl"] .home-center-phone:hover {
+  color: #f66962;
 }
 
 /* Offline lesson cards — "فتح الدرس" on visual left (RTL) */

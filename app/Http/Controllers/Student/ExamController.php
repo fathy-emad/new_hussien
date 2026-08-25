@@ -81,6 +81,7 @@ class ExamController extends Controller
         $tested = $status === 'completed';
         $readonly = in_array($status, ['time_ended', 'completed'], true);
         $remainingMinutes = ExamStudentScoring::remainingMinutes($examStudent);
+        $remainingSeconds = ExamStudentScoring::remainingSeconds($examStudent);
 
         $questionCards = [];
         foreach ($examStudent->questionsAnswers ?? [] as $key => $qa) {
@@ -109,8 +110,10 @@ class ExamController extends Controller
             'examStudentId' => $examStudent->id,
             'questionCards' => $questionCards,
             'remainingMinutes' => $remainingMinutes,
+            'remainingSeconds' => $remainingSeconds,
             'tested' => $tested,
             'readonly' => $readonly,
+            'showCorrectAnswers' => $readonly,
             'status' => $status,
         ]);
     }
@@ -135,7 +138,11 @@ class ExamController extends Controller
             abort(403);
         }
 
-        $canEdit = now()->lt($examStudent->finished) || $request->boolean('final');
+        $canEdit = now()->lt($examStudent->finished)
+            || (
+                $request->boolean('final')
+                && now()->lte($examStudent->finished->copy()->addSeconds(30))
+            );
 
         if (! $canEdit) {
             return response()->json(['message' => 'انتهى وقت الامتحان'], 403);
