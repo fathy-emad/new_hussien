@@ -109,7 +109,8 @@ class MakeCard implements ShouldQueue
         /* ---------- CODE TEXT (fixed size + offsets, unchanged) ---------- */
 
         // choose bold font
-        $fontPath = $this->fontPath;
+        $bundledFontPath = public_path('fonts/Inter-Bold.ttf');
+        $fontPath = is_file($bundledFontPath) ? $bundledFontPath : $this->fontPath;
         if (!$fontPath || !is_file($fontPath)) {
             if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' && is_file('C:\Windows\Fonts\arialbd.ttf')) {
                 $fontPath = 'C:\Windows\Fonts\arialbd.ttf';

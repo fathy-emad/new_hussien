@@ -65,7 +65,7 @@ class GenerateStudentCardsJob implements ShouldQueue
 
         $stamp = now()->format('Ymd_His');
         $cardsDir = storage_path("app/tmp/cards/batch_{$batch}_{$stamp}");
-        $zipName = "batch_{$batch}_{$stamp}.zip";
+        $zipName = "batch-{$batch}.zip";
         $publicZip = public_path("cards/{$zipName}");
 
         File::ensureDirectoryExists($cardsDir);
