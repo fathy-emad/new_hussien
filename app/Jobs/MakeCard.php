@@ -20,13 +20,13 @@ class MakeCard implements ShouldQueue
     private const BARCODE_W         = 1500; // final footprint width (px)
     private const BARCODE_H         = 150;  // final footprint height (px)
     private const BARCODE_OFFSET_X  = 170;    // nudge after centering (left = negative)
-    private const BARCODE_OFFSET_Y  = -120;    // nudge after centering (down = positive)
+    private const BARCODE_OFFSET_Y  = -160;    // nudge after centering (down = positive)
 
     // ------- CODE (ID) controls — independent of password -------
     private const CODE_LABEL_PAD    = 100;  // skip the green "ID" chip
     private const CODE_TEXT_SIZE    = 55;
     private const CODE_OFFSET_X     = 150; // left = negative, right = positive
-    private const CODE_OFFSET_Y     =  -10;  // up = negative, down = positive
+    private const CODE_OFFSET_Y     =  -50;  // up = negative, down = positive
 
     // ------- PASSWORD controls — independent of code -------
     private const PASSWORD_LABEL_PAD = 180; // skip the green "PASSWORD" chip
