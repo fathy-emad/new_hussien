@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\ExamStudent;
 use App\Models\Student;
 use App\Support\ExamStudentScoring;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -52,5 +55,33 @@ class DashboardController extends Controller
             'barcode' => studentBarcodeImage($student->code),
             'examResults' => $examResults,
         ]);
+    }
+
+    public function updatePhone(Request $request): RedirectResponse
+    {
+        /** @var Student $student */
+        $student = auth('student')->user();
+
+        $validated = $request->validate(
+            [
+                'phone' => [
+                    'required',
+                    'digits:11',
+                    Rule::unique('students', 'phone')->ignore($student->id),
+                ],
+            ],
+            [
+                'phone.required' => 'رقم الموبايل مطلوب.',
+                'phone.digits' => 'رقم الموبايل يجب أن يتكون من 11 رقماً.',
+                'phone.unique' => 'رقم الموبايل مستخدم بواسطة طالب آخر.',
+            ]
+        );
+
+        $student->phone = $validated['phone'];
+        $student->save();
+
+        return redirect()
+            ->route('student.dashboard')
+            ->with('success', 'تم تحديث رقم الموبايل بنجاح.');
     }
 }

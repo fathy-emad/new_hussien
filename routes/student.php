@@ -23,6 +23,7 @@ Route::prefix('student')->name('student.')->group(function () {
         Route::post('logout', [Authentication::class, 'logout'])->name('logout');
 
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::patch('dashboard/phone', [DashboardController::class, 'updatePhone'])->name('dashboard.phone.update');
         Route::get('profile', [ProfileController::class, 'myProfile'])->name('myProfile');
         Route::post('updateProfile/{id}', [ProfileController::class, 'updateProfile'])->name('updateProfile');
 
