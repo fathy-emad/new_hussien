@@ -37,9 +37,10 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function updateProfile(UpdateProfileRequest $request, $id): RedirectResponse
+    public function updateProfile(UpdateProfileRequest $request): RedirectResponse
     {
-        $student = Student::find($id);
+        /** @var Student $student */
+        $student = auth('student')->user();
 
         if ($request->filled('password')) {
             $request->passMatches();
@@ -48,6 +49,7 @@ class ProfileController extends Controller
 
         $student->email = $request->email;
         $student->name = $request->name;
+        $student->phone = $request->validated('phone');
 
         $avatar = resolveUploadedFilename($request->avatar);
         if ($avatar !== null) {

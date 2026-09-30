@@ -118,28 +118,8 @@
                                     <p class="mb-0 fw-semibold">{{ $student->code }}</p>
                                 </div>
                                 <div class="col-md-4">
-                                    <form method="POST" action="{{ route('student.dashboard.phone.update') }}">
-                                        @csrf
-                                        @method('PATCH')
-                                        <label class="text-muted small mb-1" for="dashboard-phone">رقم الموبايل</label>
-                                        <div class="input-group input-group-sm">
-                                            <input
-                                                type="text"
-                                                class="form-control @error('phone') is-invalid @enderror"
-                                                id="dashboard-phone"
-                                                name="phone"
-                                                value="{{ old('phone', $student->phone) }}"
-                                                inputmode="numeric"
-                                                maxlength="11"
-                                                pattern="[0-9]{11}"
-                                                required
-                                            >
-                                            <button class="btn btn-primary" type="submit">حفظ</button>
-                                            @error('phone')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </form>
+                                    <p class="text-muted small mb-1">رقم الموبايل</p>
+                                    <p class="mb-0 fw-semibold">{{ $student->phone ?: '—' }}</p>
                                 </div>
                                 <div class="col-md-4">
                                     <p class="text-muted small mb-1">السنة الدراسية</p>

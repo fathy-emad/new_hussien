@@ -19,7 +19,7 @@
                                 </div>
                             @endif
 
-                            <form method="POST" action="{{ route('student.updateProfile', $student->id) }}" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('student.updateProfile') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row g-3">
                                     <div class="col-md-6">
@@ -37,8 +37,19 @@
                                         <input type="text" class="form-control" value="{{ $student->code }}" readonly>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">رقم الموبايل</label>
-                                        <input type="text" class="form-control" value="{{ $student->phone ?: '—' }}" readonly>
+                                        <label class="form-label" for="phone">رقم الموبايل</label>
+                                        <input
+                                            type="text"
+                                            class="form-control @error('phone') is-invalid @enderror"
+                                            name="phone"
+                                            id="phone"
+                                            value="{{ old('phone', $student->phone) }}"
+                                            inputmode="numeric"
+                                            maxlength="11"
+                                            pattern="[0-9]{11}"
+                                            required
+                                        >
+                                        @error('phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label" for="password">كلمة مرور جديدة (اختياري)</label>

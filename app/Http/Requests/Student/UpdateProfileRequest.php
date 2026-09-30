@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Student;
 
-use App\Models\Student;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class UpdateProfileRequest extends FormRequest
@@ -14,6 +14,28 @@ class UpdateProfileRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    public function rules(): array
+    {
+        $studentId = auth('student')->id();
+
+        return [
+            'phone' => [
+                'required',
+                'digits:11',
+                Rule::unique('students', 'phone')->ignore($studentId),
+            ],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'phone.required' => 'رقم الموبايل مطلوب.',
+            'phone.digits' => 'رقم الموبايل يجب أن يتكون من 11 رقماً.',
+            'phone.unique' => 'رقم الموبايل مستخدم بواسطة طالب آخر.',
+        ];
     }
 
     /**
