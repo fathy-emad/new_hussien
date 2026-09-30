@@ -53,12 +53,19 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label" for="password">كلمة مرور جديدة (اختياري)</label>
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password">
-                                        @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        <div class="pass-group">
+                                            <input type="password" class="form-control pass-input @error('password') is-invalid @enderror" name="password" id="password">
+                                            <span class="feather-eye-off toggle-password" role="button" aria-label="إظهار أو إخفاء كلمة المرور"></span>
+                                        </div>
+                                        @error('password')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label" for="password_confirmation">تأكيد كلمة المرور</label>
-                                        <input type="password" class="form-control" name="password_confirmation" id="password_confirmation">
+                                        <div class="pass-group">
+                                            <input type="password" class="form-control pass-input @error('password_confirmation') is-invalid @enderror" name="password_confirmation" id="password_confirmation">
+                                            <span class="feather-eye-off toggle-password" role="button" aria-label="إظهار أو إخفاء تأكيد كلمة المرور"></span>
+                                        </div>
+                                        @error('password_confirmation')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                     </div>
                                 </div>
                                 <div class="mt-4">

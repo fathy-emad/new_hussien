@@ -43,7 +43,6 @@ class ProfileController extends Controller
         $student = auth('student')->user();
 
         if ($request->filled('password')) {
-            $request->passMatches();
             $student->password = $request->password;
         }
 

@@ -4,7 +4,6 @@ namespace App\Http\Requests\Student;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 
 class UpdateProfileRequest extends FormRequest
 {
@@ -26,6 +25,17 @@ class UpdateProfileRequest extends FormRequest
                 'digits:11',
                 Rule::unique('students', 'phone')->ignore($studentId),
             ],
+            'password' => [
+                'nullable',
+                'string',
+                'min:6',
+                'confirmed',
+            ],
+            'password_confirmation' => [
+                'nullable',
+                'required_with:password',
+                'string',
+            ],
         ];
     }
 
@@ -35,19 +45,9 @@ class UpdateProfileRequest extends FormRequest
             'phone.required' => 'رقم الموبايل مطلوب.',
             'phone.digits' => 'رقم الموبايل يجب أن يتكون من 11 رقماً.',
             'phone.unique' => 'رقم الموبايل مستخدم بواسطة طالب آخر.',
+            'password.min' => 'كلمة المرور يجب ألا تقل عن 6 أحرف.',
+            'password.confirmed' => 'كلمة المرور وتأكيد كلمة المرور غير متطابقين.',
+            'password_confirmation.required_with' => 'تأكيد كلمة المرور مطلوب عند إدخال كلمة مرور جديدة.',
         ];
-    }
-
-    /**
-     * Attempt to authenticate the request's credentials.
-     *
-     * @throws ValidationException
-     */
-    public function passMatches(): void
-    {
-        if ($this->request->get('password') != $this->request->get('password_confirmation'))
-        {
-            throw ValidationException::withMessages([ "عليك التاكد من كلمة المرور و تاكيد كلمة المرور" ]);
-        }
     }
 }
