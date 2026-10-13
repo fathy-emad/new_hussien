@@ -326,31 +326,44 @@ body.admin-panel .admin-lesson-video-element {
     display: block;
     width: 100%;
     max-width: 100%;
-    height: 0;
-    padding: 0 0 56.25%;
+    height: auto !important;
+    padding: 56.25% 0 0 0 !important;
     background: #000;
     border-radius: 8px;
     overflow: hidden;
+    box-sizing: content-box;
 }
 
 .vimeo-embed iframe {
     position: absolute !important;
-    top: 0;
-    left: 0;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    max-width: none;
-    max-height: none;
+    max-width: none !important;
+    max-height: none !important;
+    min-width: 0;
+    min-height: 0;
     border: 0;
     display: block;
 }
 
 body.admin-panel .admin-lesson-view-video {
     width: 100%;
+    max-width: 100%;
     padding: 0;
     border-radius: 8px;
     overflow: hidden;
     background: #000;
+}
+
+@media (max-width: 767.98px) {
+    body.admin-panel .admin-lesson-view-video,
+    .vimeo-embed {
+        border-radius: 6px;
+    }
 }
 
 body.admin-panel .admin-detail-box {
@@ -513,6 +526,25 @@ body.admin-panel .admin-student-avatar {
     height: 72px;
     object-fit: cover;
     border: 2px solid #e8e8f0;
+}
+
+@media (max-width: 767.98px) {
+    body.admin-panel .page-content {
+        padding: 16px 0 32px;
+        overflow-x: hidden;
+    }
+
+    body.admin-panel .admin-card .card-body {
+        padding: 16px;
+    }
+
+    body.admin-panel .admin-lesson-view-section {
+        padding: 12px;
+    }
+
+    body.admin-panel .admin-lesson-pdf-frame {
+        height: 240px;
+    }
 }
 
 @keyframes adminUploadNotifyIn {

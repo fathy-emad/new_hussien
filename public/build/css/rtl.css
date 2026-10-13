@@ -607,6 +607,7 @@ html[dir="rtl"] .home-offline-section-header .section-sub-head {
 
 .admin-lesson-view-video {
   width: 100%;
+  max-width: 100%;
   border-radius: 8px;
   overflow: hidden;
   background: #000;
@@ -617,21 +618,33 @@ html[dir="rtl"] .home-offline-section-header .section-sub-head {
   display: block;
   width: 100%;
   max-width: 100%;
-  height: 0;
-  padding: 0 0 56.25%;
+  height: auto !important;
+  padding: 56.25% 0 0 0 !important;
   background: #000;
   border-radius: 8px;
   overflow: hidden;
+  box-sizing: content-box;
 }
 
 .vimeo-embed iframe {
   position: absolute !important;
-  top: 0;
-  left: 0;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  max-width: none;
-  max-height: none;
+  max-width: none !important;
+  max-height: none !important;
+  min-width: 0;
+  min-height: 0;
   border: 0;
   display: block;
+}
+
+@media (max-width: 767.98px) {
+  .admin-lesson-view-video,
+  .vimeo-embed {
+    border-radius: 6px;
+  }
 }
