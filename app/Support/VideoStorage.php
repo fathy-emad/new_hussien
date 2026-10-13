@@ -7,10 +7,6 @@ use Illuminate\Support\Facades\Storage;
 
 class VideoStorage
 {
-    public const FOLDER_LESSONS = 'lessons';
-
-    public const FOLDER_CAPACITORS = 'capacitors';
-
     public const FOLDER_WEBSITE = 'website';
 
     public static function disk(): FilesystemAdapter
@@ -70,11 +66,7 @@ class VideoStorage
 
     public static function allowedFolder(string $folder): bool
     {
-        return in_array($folder, [
-            self::FOLDER_LESSONS,
-            self::FOLDER_CAPACITORS,
-            self::FOLDER_WEBSITE,
-        ], true);
+        return $folder === self::FOLDER_WEBSITE;
     }
 
     public static function ensureFolder(string $folder): void

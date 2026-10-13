@@ -6,13 +6,12 @@ use App\Http\Controllers\Concerns\PaginatesAdminTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Capacitors\CreateEditCapacitorRequest;
 use App\Models\Capacitor;
-use App\Support\VideoStorage;
+use App\Support\VimeoVideo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class CapacitorController extends Controller
@@ -23,17 +22,7 @@ class CapacitorController extends Controller
     {
         $model = Capacitor::findOrFail($id);
         $classRooms = getConstant('classRooms')->getArray();
-        $videoFile = normalizeStoredFilename($model->link);
-        $hasVideo = $videoFile && VideoStorage::exists(VideoStorage::FOLDER_CAPACITORS, $videoFile);
-        $videoUrl = $hasVideo
-            ? route('admin.video.preview', ['folder' => 'capacitors', 'file' => $videoFile])
-            : null;
-        $videoSizeMb = null;
-
-        if ($hasVideo) {
-            $path = VideoStorage::relativePath(VideoStorage::FOLDER_CAPACITORS, $videoFile);
-            $videoSizeMb = number_format(VideoStorage::disk()->size($path) / 1048576, 2);
-        }
+        $hasVideo = VimeoVideo::hasVideo($model->link);
 
         $images = $this->buildAttachmentList($model->images, 'uploads/capacitors/lessons/images');
         $pdfs = $this->buildAttachmentList($model->pdf, 'uploads/capacitors/lessons/files');
@@ -43,9 +32,6 @@ class CapacitorController extends Controller
             'classRooms' => $classRooms,
             'searchParams' => ['classroom' => $model->classroom],
             'hasVideo' => $hasVideo,
-            'videoUrl' => $videoUrl,
-            'videoFile' => $videoFile,
-            'videoSizeMb' => $videoSizeMb,
             'images' => $images,
             'pdfs' => $pdfs,
         ]);
@@ -123,19 +109,7 @@ class CapacitorController extends Controller
     {
         $model = new Capacitor;
         $model->title = $request->title;
-        $model->link = $this->resolveCapacitorVideoLink($request);
-
-        if ($model->link === '' && $this->submittedLinkLooksLikeVideo($request)) {
-            throw ValidationException::withMessages([
-                'link' => 'ملف الفيديو غير موجود على السيرفر. أعد رفع الفيديو ثم احفظ.',
-            ]);
-        }
-
-        if ($model->link === '') {
-            throw ValidationException::withMessages([
-                'link' => 'يجب رفع فيديو الدرس.',
-            ]);
-        }
+        $model->link = VimeoVideo::normalize($request->input('link')) ?? '';
 
         $model->watch_times = $request->watch_times;
         $model->description = $request->description;
@@ -190,18 +164,6 @@ class CapacitorController extends Controller
             }
         }
 
-        $lessonVideo = [];
-        $videoFile = normalizeStoredFilename($model->link);
-        if ($videoFile && VideoStorage::exists(VideoStorage::FOLDER_CAPACITORS, $videoFile)) {
-            $path = VideoStorage::relativePath(VideoStorage::FOLDER_CAPACITORS, $videoFile);
-            $lessonVideo[] = [
-                'name' => $videoFile,
-                'size' => VideoStorage::disk()->size($path),
-                'type' => VideoStorage::mimeType(VideoStorage::FOLDER_CAPACITORS, $videoFile),
-                'file' => route('admin.video.preview', ['folder' => 'capacitors', 'file' => $videoFile]),
-            ];
-        }
-
         return view('admin.capacitors.capacitor.edit', [
             'model' => $model,
             'classRooms' => $classRooms,
@@ -209,7 +171,6 @@ class CapacitorController extends Controller
             'attachments' => [
                 'images' => $images,
                 'pdf' => $pdfs,
-                'lessonVideo' => $lessonVideo,
             ],
         ]);
     }
@@ -219,15 +180,7 @@ class CapacitorController extends Controller
         $model = Capacitor::findOrFail($id);
         $created_at = $model->created_at;
         $model->title = $request->title;
-        $link = $this->resolveCapacitorVideoLink($request);
-
-        if ($link !== '') {
-            $model->link = $link;
-        } elseif ($this->submittedLinkLooksLikeVideo($request)) {
-            throw ValidationException::withMessages([
-                'link' => 'ملف الفيديو غير موجود على السيرفر. أعد رفع الفيديو ثم احفظ.',
-            ]);
-        }
+        $model->link = VimeoVideo::normalize($request->input('link')) ?? $model->link;
 
         $model->watch_times = $request->watch_times;
         $model->description = $request->description;
@@ -273,47 +226,4 @@ class CapacitorController extends Controller
         return $items;
     }
 
-    private function resolveCapacitorVideoLink(Request $request): string
-    {
-        $submitted = trim((string) $request->input('link'));
-
-        if ($submitted === '') {
-            session()->forget('admin_pending_capacitor_video');
-
-            return '';
-        }
-
-        $fileName = basename(resolveUploadedFilename($request->input('link')) ?? '');
-
-        if ($fileName !== '' && $this->capacitorVideoExistsOnDisk($fileName)) {
-            session()->forget('admin_pending_capacitor_video');
-
-            return $fileName;
-        }
-
-        $pending = session('admin_pending_capacitor_video');
-
-        if (is_string($pending) && $pending !== '') {
-            $pending = basename($pending);
-
-            if ($this->capacitorVideoExistsOnDisk($pending)) {
-                session()->forget('admin_pending_capacitor_video');
-
-                return $pending;
-            }
-        }
-
-        return '';
-    }
-
-    private function submittedLinkLooksLikeVideo(Request $request): bool
-    {
-        return trim((string) $request->input('link')) !== '';
-    }
-
-    private function capacitorVideoExistsOnDisk(string $fileName): bool
-    {
-        return VideoStorage::exists(VideoStorage::FOLDER_CAPACITORS, $fileName)
-            || is_file(VideoStorage::absolutePath(VideoStorage::FOLDER_CAPACITORS, $fileName));
-    }
 }

@@ -3,7 +3,6 @@
 namespace App\Support;
 
 use App\Models\Capacitor;
-use App\Support\VideoStorage;
 
 class CapacitorAttachments
 {
@@ -17,15 +16,6 @@ class CapacitorAttachments
             }
         }
 
-        $thumbnail = [];
-        $thumbFile = normalizeStoredFilename($capacitor->thumbnail);
-        if ($thumbFile) {
-            $meta = LessonAttachments::publicUploadMeta('uploads/capacitors/lessons/images', $thumbFile);
-            if ($meta) {
-                $thumbnail[] = $meta;
-            }
-        }
-
         $pdfs = [];
         foreach (array_filter(explode(',', (string) $capacitor->pdf)) as $pdf) {
             $meta = LessonAttachments::publicUploadMeta('uploads/capacitors/lessons/files', trim($pdf));
@@ -34,18 +24,10 @@ class CapacitorAttachments
             }
         }
 
-        $hasVideo = false;
-        $videoFile = normalizeStoredFilename($capacitor->link);
-        if ($videoFile && VideoStorage::exists(VideoStorage::FOLDER_CAPACITORS, $videoFile)) {
-            $hasVideo = true;
-        }
-
         return [
-            'thumbnail' => $thumbnail,
             'images' => $images,
             'pdf' => $pdfs,
-            'hasVideo' => $hasVideo,
-            'videoFile' => $videoFile,
+            'hasVideo' => VimeoVideo::hasVideo($capacitor->link),
         ];
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Chapter;
 use App\Models\Lesson;
 use App\Models\View AS Watch;
 use App\Support\LessonAttachments;
+use App\Support\VimeoVideo;
 use Illuminate\View\View;
 
 class MaterialController extends Controller
@@ -37,7 +38,7 @@ class MaterialController extends Controller
                     'title' => $lesson->title,
                     'watchTimes' => $lesson->watchTimes ?: 0,
                     'views' => $view,
-                    'opened' => $lesson->link && $view < $lesson->watchTimes
+                    'opened' => VimeoVideo::hasVideo($lesson->link) && $view < $lesson->watchTimes
                 ];
             }
         }
@@ -60,7 +61,7 @@ class MaterialController extends Controller
         $student_views = Watch::where('student_id', $student_id)->where('lesson_id', $lesson->id)->first();
         $view = $student_views ? $student_views->times : 0;
         $lesson->view = $view;
-        $lesson->opened = $lesson->link && $view < $lesson->watchTimes;
+        $lesson->opened = VimeoVideo::hasVideo($lesson->link) && $view < $lesson->watchTimes;
 
         if ($student_views && $view < $lesson->watchTimes){
             $student_views->times = $view + 1;

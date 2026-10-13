@@ -8,7 +8,7 @@ use App\Http\Requests\Admin\Settings\CreateEditLessonRequest;
 use App\Models\Chapter;
 use App\Models\Lesson;
 use App\Support\LessonAttachments;
-use App\Support\VideoStorage;
+use App\Support\VimeoVideo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -25,22 +25,11 @@ class LessonController extends Controller
     public function view($id): View
     {
         $lesson = Lesson::with('chapter')->findOrFail($id);
-        $videoFile = normalizeStoredFilename($lesson->link);
-        $hasVideo = $videoFile && (
-            VideoStorage::exists(VideoStorage::FOLDER_LESSONS, $videoFile)
-            || is_file(VideoStorage::absolutePath(VideoStorage::FOLDER_LESSONS, $videoFile))
-        );
+        $hasVideo = VimeoVideo::hasVideo($lesson->link);
 
         return view('admin.settings.lesson.view', [
             'lesson' => $lesson,
-            'videoFile' => $videoFile,
             'hasVideo' => $hasVideo,
-            'videoUrl' => $hasVideo
-                ? VideoStorage::adminPreviewUrl(VideoStorage::FOLDER_LESSONS, $videoFile)
-                : null,
-            'videoSizeMb' => $hasVideo
-                ? round(VideoStorage::size(VideoStorage::FOLDER_LESSONS, $videoFile) / (1024 * 1024), 1)
-                : null,
             'attachments' => LessonAttachments::forLesson($lesson),
             'searchParams' => [
                 'chapter_id' => $lesson->chapter_id,
@@ -153,13 +142,7 @@ class LessonController extends Controller
         $lesson = new Lesson;
         $lesson->title = $request->title;
         $lesson->chapter_id = $request->chapter_id;
-        $lesson->link = $this->resolveLessonVideoLink($request);
-
-        if ($lesson->link === '' && $this->submittedLinkLooksLikeVideo($request)) {
-            throw ValidationException::withMessages([
-                'link' => 'ملف الفيديو غير موجود على السيرفر. أعد رفع الفيديو ثم احفظ.',
-            ]);
-        }
+        $lesson->link = VimeoVideo::normalize($request->input('link')) ?? '';
 
         $lesson->NO = $request->NO;
         $lesson->watchTimes = $request->watchTimes ?? 0;
@@ -195,7 +178,7 @@ class LessonController extends Controller
                 'classroom' => $lesson->chapter?->classroom,
                 'chapter_id' => $lesson->chapter_id,
             ],
-            'attachments' => LessonAttachments::forLesson($lesson, includeVideo: true),
+            'attachments' => LessonAttachments::forLesson($lesson),
         ]);
     }
 
@@ -205,24 +188,7 @@ class LessonController extends Controller
         $created_at = $lesson->created_at;
         $lesson->title = $request->title;
         $lesson->chapter_id = $request->chapter_id;
-        if ($request->has('link')) {
-            $submittedLink = trim((string) $request->input('link'));
-            $newVideo = $this->resolveLessonVideoLink($request);
-
-            if ($newVideo === '' && $this->submittedLinkLooksLikeVideo($request)) {
-                throw ValidationException::withMessages([
-                    'link' => 'ملف الفيديو غير موجود على السيرفر. أعد رفع الفيديو ثم احفظ.',
-                ]);
-            }
-
-            $oldVideo = normalizeStoredFilename($lesson->link);
-
-            if ($oldVideo && $newVideo !== '' && $oldVideo !== $newVideo) {
-                VideoStorage::delete(VideoStorage::FOLDER_LESSONS, $oldVideo);
-            }
-
-            $lesson->link = $newVideo;
-        }
+        $lesson->link = VimeoVideo::normalize($request->input('link')) ?? '';
         $lesson->NO = $request->NO;
         $lesson->watchTimes = $request->watchTimes ?? $lesson->watchTimes;
         $lesson->info = $request->info;
@@ -250,50 +216,6 @@ class LessonController extends Controller
             'chapter_id' => $request->chapter_id,
             'classroom' => $chapter?->classroom,
         ])->with('success', $success);
-    }
-
-    private function resolveLessonVideoLink(Request $request): string
-    {
-        $submitted = trim((string) $request->input('link'));
-
-        if ($submitted === '') {
-            session()->forget('admin_pending_lesson_video');
-
-            return '';
-        }
-
-        $fileName = basename(resolveUploadedFilename($request->input('link')) ?? '');
-
-        if ($fileName !== '' && $this->lessonVideoExistsOnDisk($fileName)) {
-            session()->forget('admin_pending_lesson_video');
-
-            return $fileName;
-        }
-
-        $pending = session('admin_pending_lesson_video');
-
-        if (is_string($pending) && $pending !== '') {
-            $pending = basename($pending);
-
-            if ($this->lessonVideoExistsOnDisk($pending)) {
-                session()->forget('admin_pending_lesson_video');
-
-                return $pending;
-            }
-        }
-
-        return '';
-    }
-
-    private function submittedLinkLooksLikeVideo(Request $request): bool
-    {
-        return trim((string) $request->input('link')) !== '';
-    }
-
-    private function lessonVideoExistsOnDisk(string $fileName): bool
-    {
-        return VideoStorage::exists(VideoStorage::FOLDER_LESSONS, $fileName)
-            || is_file(VideoStorage::absolutePath(VideoStorage::FOLDER_LESSONS, $fileName));
     }
 
     private function resolveLessonCommaSeparatedFiles(mixed $value, string $diskFolder, string $field): string
@@ -362,11 +284,6 @@ class LessonController extends Controller
             $lesson->views()->delete();
             $lesson->delete();
         });
-
-        $video = normalizeStoredFilename($lesson->link);
-        if ($video) {
-            VideoStorage::delete(VideoStorage::FOLDER_LESSONS, $video);
-        }
 
         $this->deleteLessonUploads('lessons/images', explodeUploadedFilenames($lesson->images));
         $this->deleteLessonUploads('lessons/files', explodeUploadedFilenames($lesson->pdf));

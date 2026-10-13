@@ -14,7 +14,7 @@
         ],
         [
             'route' => 'student.material',
-            'active' => request()->routeIs('student.material', 'student.lesson', 'student.video.lesson'),
+            'active' => request()->routeIs('student.material', 'student.lesson'),
             'icon' => 'bxs-book-open',
             'label' => 'المواد الدراسية',
         ],

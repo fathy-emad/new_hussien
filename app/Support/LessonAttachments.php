@@ -6,7 +6,7 @@ use App\Models\Lesson;
 
 class LessonAttachments
 {
-    public static function forLesson(Lesson $lesson, bool $includeVideo = false): array
+    public static function forLesson(Lesson $lesson): array
     {
         $images = [];
         foreach (explodeUploadedFilenames($lesson->images) as $image) {
@@ -24,21 +24,10 @@ class LessonAttachments
             }
         }
 
-        $attachments = [
+        return [
             'images' => $images,
             'pdf' => $pdfs,
         ];
-
-        if ($includeVideo) {
-            $lessonVideo = [];
-            $videoMeta = VideoStorage::dropzoneMeta(VideoStorage::FOLDER_LESSONS, $lesson->link);
-            if ($videoMeta) {
-                $lessonVideo[] = $videoMeta;
-            }
-            $attachments['lessonVideo'] = $lessonVideo;
-        }
-
-        return $attachments;
     }
 
     public static function publicUploadMeta(string $webDir, string $fileName): ?array

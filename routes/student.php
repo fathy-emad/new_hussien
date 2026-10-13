@@ -8,7 +8,6 @@ use App\Http\Controllers\Student\ExamController;
 use App\Http\Controllers\Student\MaterialController;
 use App\Http\Controllers\Student\ProfileController;
 use App\Http\Controllers\Student\ReviewController;
-use App\Http\Controllers\VideoStreamController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('student')->name('student.')->group(function () {
@@ -28,7 +27,6 @@ Route::prefix('student')->name('student.')->group(function () {
 
         Route::get('material', [MaterialController::class, 'material'])->name('material');
         Route::get('lesson/{id}', [MaterialController::class, 'lesson'])->name('lesson');
-        Route::get('video/lesson/{id}', [VideoStreamController::class, 'lesson'])->name('video.lesson');
 
         Route::get('exams', [ExamController::class, 'exams'])->name('exams');
         Route::get('exam/open/{exam_id}', [ExamController::class, 'examOpen'])->name('exam.open');

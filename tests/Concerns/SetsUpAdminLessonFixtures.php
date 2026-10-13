@@ -4,9 +4,7 @@ namespace Tests\Concerns;
 
 use App\Models\Admin;
 use App\Models\Chapter;
-use App\Support\VideoStorage;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 trait SetsUpAdminLessonFixtures
 {
@@ -16,8 +14,6 @@ trait SetsUpAdminLessonFixtures
 
     protected function setUpAdminLessonFixtures(): void
     {
-        Storage::fake('videos');
-
         $this->admin = Admin::create([
             'name' => 'Test Admin',
             'email' => 'admin-lesson-test@example.com',
@@ -33,14 +29,6 @@ trait SetsUpAdminLessonFixtures
         ]);
 
         $this->actingAs($this->admin, 'admin');
-    }
-
-    protected function putLessonVideoOnStorage(string $fileName, string $content = 'fake-video-binary'): string
-    {
-        $path = VideoStorage::relativePath(VideoStorage::FOLDER_LESSONS, $fileName);
-        Storage::disk('videos')->put($path, $content);
-
-        return $fileName;
     }
 
     protected function lessonPayload(array $overrides = []): array

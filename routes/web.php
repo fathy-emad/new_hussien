@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/video/website/{file}', [VideoStreamController::class, 'website'])
     ->where('file', '[a-zA-Z0-9._\-]+')
     ->name('video.website');
-Route::get('/video/capacitor/{id}', [VideoStreamController::class, 'capacitor'])->name('video.capacitor');
-
 Route::get('/', [Welcome::class, 'homepage'])->name('home');
 Route::get('/capacitors', [Welcome::class, 'capacitors'])->name('capacitors');
 Route::post('/capacitor', [Welcome::class, 'capacitor'])->name('capacitor');

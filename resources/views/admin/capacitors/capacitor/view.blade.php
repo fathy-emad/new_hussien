@@ -54,18 +54,16 @@
                                 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
                                     <h5 class="mb-0">فيديو الدرس</h5>
                                     @if ($hasVideo)
-                                        <span class="badge bg-success">متاح</span>
+                                        <span class="badge bg-success">Vimeo</span>
                                     @else
                                         <span class="badge bg-warning text-dark">لا يوجد فيديو</span>
                                     @endif
                                 </div>
 
                                 @if ($hasVideo)
-                                    <video class="w-100 rounded admin-lesson-video-element" controls preload="metadata" playsinline src="{{ $videoUrl }}">
-                                        متصفحك لا يدعم تشغيل الفيديو.
-                                    </video>
+                                    <x-vimeo-embed :value="$model->link" :title="$model->title" />
                                     <p class="text-muted small mt-2 mb-0">
-                                        <code>{{ $videoFile }}</code> — {{ $videoSizeMb }} MB
+                                        <strong>قيمة link:</strong> <code>{{ $model->link }}</code>
                                     </p>
                                 @endif
                             </div>

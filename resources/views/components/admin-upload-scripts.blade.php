@@ -16,7 +16,6 @@
     };
 </script>
 <script src="{{ asset('build/js/admin/upload/dropzone-core.js') }}"></script>
-<script src="{{ asset('build/js/admin/upload/dropzone-video.js') }}"></script>
 <script src="{{ asset('build/js/admin/upload/dropzone-file.js') }}"></script>
 {{ $slot }}
 @endpush

@@ -2,13 +2,10 @@
 @extends('layout.mainlayout')
 @section('content')
     @php
-        $thumbnail = $attachments['thumbnail'][0] ?? null;
         $images = $attachments['images'] ?? [];
         $pdfs = $attachments['pdf'] ?? [];
         $classLabel = $classRooms[(int) $lesson->classroom] ?? $lesson->classroom;
-        $videoUrl = $attachments['hasVideo']
-            ? route('video.capacitor', ['id' => $lesson->id, 'code' => $code])
-            : null;
+        $hasVideo = $attachments['hasVideo'] ?? \App\Support\VimeoVideo::hasVideo($lesson->link);
     @endphp
 
     <div class="breadcrumb-bar breadcrumb-bar-info">
@@ -53,27 +50,10 @@
                                 </div>
                             @endif
 
-                            @if ($thumbnail)
-                                <div class="mb-4 text-center">
-                                    <img src="{{ $thumbnail['file'] }}" alt="{{ $lesson->title }}" class="img-fluid rounded" style="max-height: 280px;">
-                                </div>
-                            @endif
-
-                            @if ($videoUrl)
+                            @if ($hasVideo)
                                 <div class="mb-4">
                                     <h5 class="mb-3">فيديو الدرس</h5>
-                                    <video
-                                        class="w-100 rounded"
-                                        controls
-                                        preload="metadata"
-                                        playsinline
-                                        @if ($thumbnail)
-                                            poster="{{ $thumbnail['file'] }}"
-                                        @endif
-                                        src="{{ $videoUrl }}"
-                                    >
-                                        متصفحك لا يدعم تشغيل الفيديو.
-                                    </video>
+                                    <x-vimeo-embed :value="$lesson->link" :title="$lesson->title" />
                                 </div>
                             @endif
 

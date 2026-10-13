@@ -51,16 +51,6 @@ return [
     */
 
     'paths' => [
-        'videos/lessons' => [
-            'type' => 'video',
-            'disk' => 'videos',
-            'folder' => 'lessons',
-        ],
-        'videos/capacitors' => [
-            'type' => 'video',
-            'disk' => 'videos',
-            'folder' => 'capacitors',
-        ],
         'videos/website' => [
             'type' => 'video',
             'disk' => 'videos',

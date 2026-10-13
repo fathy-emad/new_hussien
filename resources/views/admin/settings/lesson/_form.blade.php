@@ -75,41 +75,7 @@
         </div>
     </div>
     <div class="col-12">
-        @php
-            $storedVideoLink = old('link', normalizeStoredFilename($lesson?->link) ?? '');
-        @endphp
-        <input
-            type="hidden"
-            name="link"
-            id="lesson_video_link"
-            value="{{ $storedVideoLink }}"
-        >
-        <x-admin-dropzone
-            id="lesson_video_dropzone"
-            label="فيديو الدرس"
-            title="اضغط لرفع الفيديو"
-            description="MP4 / WebM — يدعم ملفات أكبر من 500MB (رفع على أجزاء 2MB مع شريط تقدم)"
-        >
-            @error('link')
-                <div class="text-danger small mt-1">{{ $message }}</div>
-            @enderror
-            <div class="mt-2">
-                <label class="form-label small mb-1" for="lesson_video_link_display">اسم الملف المحفوظ على السيرفر (يُرسل مع الحفظ)</label>
-                <input
-                    type="text"
-                    class="form-control form-control-sm admin-video-link-display"
-                    id="lesson_video_link_display"
-                    value="{{ $storedVideoLink }}"
-                    readonly
-                    placeholder="سيظهر هنا بعد اكتمال الرفع — مثال: 1780815717_xxxxx.mp4"
-                >
-                <p id="lesson_video_link_hint" class="text-muted small mt-1 mb-0 {{ $storedVideoLink ? '' : 'd-none' }}">
-                    @if ($storedVideoLink)
-                        سيتم حفظ هذا الملف في قاعدة البيانات (link): {{ $storedVideoLink }}
-                    @endif
-                </p>
-            </div>
-        </x-admin-dropzone>
+        <x-admin-vimeo-field :value="$lesson?->link" />
     </div>
     <div class="col-12">
         <div class="input-block">

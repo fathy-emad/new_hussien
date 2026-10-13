@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Settings;
 
+use App\Support\VimeoVideo;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateEditLessonRequest extends FormRequest
@@ -27,6 +28,15 @@ class CreateEditLessonRequest extends FormRequest
             'chapter_id' => ['required'],
             'NO' => ['required', 'numeric'],
             'watchTimes' => ['required', 'numeric', 'min:0'],
+            'link' => [
+                'nullable',
+                'string',
+                function (string $attribute, mixed $value, \Closure $fail): void {
+                    if (trim((string) $value) !== '' && ! VimeoVideo::normalize((string) $value)) {
+                        $fail('أدخل رقم فيديو Vimeo أو رابط/كود embed صحيح.');
+                    }
+                },
+            ],
         ];
     }
 

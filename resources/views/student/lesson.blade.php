@@ -38,16 +38,8 @@
 
                             <div class="admin-lesson-view-section mb-4">
                                 <h5 class="mb-3">فيديو الدرس</h5>
-                                @if ($lesson->opened && $lesson->link)
-                                    <video
-                                        class="w-100 rounded admin-lesson-video-element"
-                                        controls
-                                        preload="metadata"
-                                        playsinline
-                                        src="{{ route('student.video.lesson', $lesson->id) }}"
-                                    >
-                                        متصفحك لا يدعم تشغيل الفيديو.
-                                    </video>
+                                @if ($lesson->opened)
+                                    <x-vimeo-embed :value="$lesson->link" :title="$lesson->title" />
                                 @else
                                     <div class="alert alert-warning mb-0">
                                         الفيديو غير متاح للمشاهدة حالياً

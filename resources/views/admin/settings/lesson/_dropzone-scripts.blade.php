@@ -2,21 +2,12 @@
     $attachments = $attachments ?? [
         'images' => [],
         'pdf' => [],
-        'lessonVideo' => [],
     ];
 @endphp
 
 <x-admin-upload-scripts>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            AdminDropzoneUpload.createVideo({
-                elementId: 'lesson_video_dropzone',
-                videoFolder: 'lessons',
-                inputName: 'link',
-                linkFieldId: 'lesson_video_link',
-                existingFiles: @json($attachments['lessonVideo'] ?? []),
-            });
-
             AdminDropzoneUpload.createMulti({
                 elementId: 'images',
                 maxFiles: 50,

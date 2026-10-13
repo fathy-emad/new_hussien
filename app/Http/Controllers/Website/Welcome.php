@@ -102,6 +102,8 @@ class Welcome extends Controller
             abort(403, 'تم استنفاذ عدد مرات المشاهدة لهذا الدرس');
         }
 
+        CapacitorOfflineAccess::recordView($code, $lesson);
+
         $classRooms = getConstant('classRooms')->getArray();
         $attachments = CapacitorAttachments::forCapacitor($lesson);
         $remainingViews = CapacitorOfflineAccess::remainingViews($code, $lesson);

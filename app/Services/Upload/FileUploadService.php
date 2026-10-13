@@ -21,17 +21,7 @@ class FileUploadService
         $target = $this->pathResolver->resolve($request->header('STORE-PATH'));
 
         if ($request->has('dzchunkindex')) {
-            $result = $this->chunkedVideoUpload->handle($request, $target);
-
-            if (! empty($result['merged'])) {
-                if ($target->folder === 'lessons') {
-                    session(['admin_pending_lesson_video' => $result['fileName']]);
-                } elseif ($target->folder === 'capacitors') {
-                    session(['admin_pending_capacitor_video' => $result['fileName']]);
-                }
-            }
-
-            return $result;
+            return $this->chunkedVideoUpload->handle($request, $target);
         }
 
         return $this->publicFileUpload->handle($request, $target);

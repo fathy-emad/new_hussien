@@ -49,39 +49,21 @@
                                 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
                                     <h5 class="mb-0">فيديو الدرس</h5>
                                     @if ($hasVideo)
-                                        <span class="badge bg-success">تم رفع الفيديو بنجاح</span>
+                                        <span class="badge bg-success">Vimeo</span>
                                     @else
                                         <span class="badge bg-warning text-dark">لا يوجد فيديو</span>
                                     @endif
                                 </div>
 
                                 @if ($hasVideo)
-                                    <div class="admin-lesson-video-player">
-                                        <video
-                                            class="w-100 rounded admin-lesson-video-element"
-                                            controls
-                                            controlsList="nodownload"
-                                            preload="metadata"
-                                            playsinline
-                                            src="{{ $videoUrl }}"
-                                        >
-                                            متصفحك لا يدعم تشغيل الفيديو.
-                                        </video>
-                                    </div>
-                                    <div class="admin-lesson-video-meta mt-2">
-                                        <p class="text-muted small mb-1">
-                                            <strong>ملف الفيديو:</strong>
-                                            <code>{{ $videoFile }}</code>
-                                        </p>
-                                        <p class="text-muted small mb-0">
-                                            <strong>الحجم:</strong> {{ $videoSizeMb }} MB
-                                            — <strong>محفوظ في:</strong> <code>storage/app/videos/lessons/</code>
-                                        </p>
-                                    </div>
+                                    <x-vimeo-embed :value="$lesson->link" :title="$lesson->title" />
+                                    <p class="text-muted small mt-2 mb-0">
+                                        <strong>قيمة link:</strong> <code>{{ $lesson->link }}</code>
+                                    </p>
                                 @else
                                     <div class="alert alert-warning mb-0">
-                                        لم يُحفظ فيديو لهذا الدرس في عمود <code>link</code>.
-                                        <a href="{{ route('admin.settings.lesson.edit', $lesson->id) }}" class="alert-link">ارفع فيديو من صفحة التعديل</a>.
+                                        لم يُحفظ فيديو Vimeo لهذا الدرس في عمود <code>link</code>.
+                                        <a href="{{ route('admin.settings.lesson.edit', $lesson->id) }}" class="alert-link">أضف رقم/رابط Vimeo من صفحة التعديل</a>.
                                     </div>
                                 @endif
                             </div>
