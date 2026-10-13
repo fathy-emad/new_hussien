@@ -27,8 +27,19 @@
         dir="ltr"
     >
     <p class="text-muted small mt-1 mb-0">
-        الصق رقم فيديو Vimeo أو الرابط أو كود embed. يُحفظ في قاعدة البيانات كرقم الفيديو (ومع رمز الخصوصية إن وُجد).
-        الفيديو مضبوط على Embed only — أضف نطاق الموقع في إعدادات Vimeo.
+        الصق رقم فيديو Vimeo أو الرابط أو كود embed. يُحفظ في عمود link كرقم الفيديو.
+    </p>
+    <p class="text-muted small mt-1 mb-0">
+        رسالة Hey There / 403 من Vimeo وليست من الموقع. افتح الفيديو → Privacy →
+        Where can this be embedded? → Specific domains وأضف بالضبط:
+        <code dir="ltr">127.0.0.1:8000</code>
+        ثم
+        <code dir="ltr">127.0.0.1</code>
+        و
+        <code dir="ltr">localhost</code>
+        و
+        <code dir="ltr">hussien-fayez.com</code>
+        ثم Update Settings وحدّث الصفحة.
     </p>
     @error($name)
         <div class="invalid-feedback d-block">{{ $message }}</div>

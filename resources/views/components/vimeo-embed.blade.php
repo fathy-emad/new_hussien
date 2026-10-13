@@ -14,7 +14,6 @@
             title="{{ $title }}"
             allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
         ></iframe>
     </div>
 @endif
