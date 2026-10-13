@@ -87,44 +87,11 @@
                             </div>
 
                             @php
-                                $thumbnail = $attachments['thumbnail'][0] ?? null;
                                 $images = $attachments['images'] ?? [];
                                 $pdfs = $attachments['pdf'] ?? [];
                             @endphp
 
                             <div class="admin-lesson-view-attachments mb-4">
-                                <div class="admin-lesson-view-section mb-4">
-                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-                                        <h5 class="mb-0">صورة الغلاف (Thumbnail)</h5>
-                                        @if ($thumbnail)
-                                            <span class="badge bg-success">متوفرة</span>
-                                        @else
-                                            <span class="badge bg-warning text-dark">لا توجد صورة</span>
-                                        @endif
-                                    </div>
-
-                                    @if ($thumbnail)
-                                        <div class="admin-lesson-thumbnail-preview">
-                                            <a href="{{ $thumbnail['file'] }}" target="_blank" rel="noopener">
-                                                <img
-                                                    src="{{ $thumbnail['file'] }}"
-                                                    alt="{{ $thumbnail['name'] }}"
-                                                    class="img-fluid rounded admin-lesson-thumbnail-img"
-                                                >
-                                            </a>
-                                        </div>
-                                        <p class="text-muted small mt-2 mb-0">
-                                            <strong>الملف:</strong> <code>{{ $thumbnail['name'] }}</code>
-                                            — <strong>الحجم:</strong> {{ $thumbnail['sizeLabel'] }}
-                                        </p>
-                                    @else
-                                        <div class="alert alert-warning mb-0">
-                                            لم تُرفع صورة غلاف لهذا الدرس.
-                                            <a href="{{ route('admin.settings.lesson.edit', $lesson->id) }}" class="alert-link">أضف صورة من صفحة التعديل</a>.
-                                        </div>
-                                    @endif
-                                </div>
-
                                 <div class="admin-lesson-view-section mb-4">
                                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
                                         <h5 class="mb-0">صور الدرس</h5>
@@ -226,19 +193,13 @@
                             @endif
 
                             <div class="row g-3 admin-lesson-view-details">
-                                <div class="col-md-4">
-                                    <div class="admin-detail-box">
-                                        <span class="admin-detail-label">فترة المشاهدة</span>
-                                        <span class="admin-detail-value">{{ $lesson->watchIntervalTime ? $lesson->watchIntervalTime.' يوم' : 'غير محدد' }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="admin-detail-box">
                                         <span class="admin-detail-label">عدد مرات المشاهدة</span>
                                         <span class="admin-detail-value">{{ $lesson->watchTimes ?? 0 }}</span>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="admin-detail-box">
                                         <span class="admin-detail-label">تاريخ الإنشاء</span>
                                         <span class="admin-detail-value">{{ $lesson->created_at?->format('d M Y - H:i') ?? '—' }}</span>

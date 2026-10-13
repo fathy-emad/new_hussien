@@ -60,7 +60,6 @@ class LessonPdfAttachmentsTest extends TestCase
             'pdf' => $oldPdf.','.$keptPdf,
             'NO' => 6,
             'watchTimes' => 1,
-            'watchIntervalTime' => 5,
             'created_by' => $this->admin->id,
         ]);
 
@@ -94,7 +93,6 @@ class LessonPdfAttachmentsTest extends TestCase
             'pdf' => $pdfOne.','.$pdfTwo,
             'NO' => 7,
             'watchTimes' => 1,
-            'watchIntervalTime' => 5,
             'created_by' => $this->admin->id,
         ]);
 

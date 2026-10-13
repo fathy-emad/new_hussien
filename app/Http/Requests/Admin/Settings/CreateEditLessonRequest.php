@@ -13,7 +13,7 @@ class CreateEditLessonRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        foreach (['link', 'thumbnail'] as $field) {
+        foreach (['link'] as $field) {
             if (is_array($this->input($field))) {
                 $this->merge([$field => $this->input($field)[0] ?? null]);
             }
@@ -26,6 +26,7 @@ class CreateEditLessonRequest extends FormRequest
             'title' => ['required'],
             'chapter_id' => ['required'],
             'NO' => ['required', 'numeric'],
+            'watchTimes' => ['required', 'numeric', 'min:0'],
         ];
     }
 
@@ -36,6 +37,8 @@ class CreateEditLessonRequest extends FormRequest
             'chapter_id.required' => 'يجب ان تختار فصل',
             'NO.required' => 'يجب ان تدخل رقم الدرس',
             'NO.numeric' => 'يجب ان تدخل رقم الدرس رقم',
+            'watchTimes.required' => 'يجب ان تدخل عدد مرات المشاهدة',
+            'watchTimes.numeric' => 'يجب ان تدخل عدد مرات المشاهدة رقم',
         ];
     }
 }

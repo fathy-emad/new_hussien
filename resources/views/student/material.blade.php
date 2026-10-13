@@ -22,7 +22,6 @@
                                                 <tr>
                                                     <th>الدرس</th>
                                                     <th>المشاهدات</th>
-                                                    <th>متاح حتى</th>
                                                     <th>إدارة</th>
                                                 </tr>
                                             </thead>
@@ -31,7 +30,6 @@
                                                     <tr>
                                                         <td>{{ $lesson['title'] }}</td>
                                                         <td>{{ $lesson['views'] }} / {{ $lesson['watchTimes'] }}</td>
-                                                        <td>{{ $lesson['endWatchIntervalTime'] }}</td>
                                                         <td>
                                                             <a href="{{ route('student.lesson', $lesson['id']) }}" class="btn btn-sm btn-primary">عرض الدرس</a>
                                                             @if (! $lesson['opened'])

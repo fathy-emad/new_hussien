@@ -35,11 +35,8 @@ class VideoStreamController extends Controller
             ->first();
 
         $viewCount = $studentViews ? (int) $studentViews->times : 0;
-        $startLessonTime = (new \DateTime($lesson->created_at->format('d M Y  H:i:s')))->getTimestamp();
-        $watchDays = (int) ($lesson->watchIntervalTime ?? 0);
-        $endLessonTime = $startLessonTime + ($watchDays * 86400);
         $maxViews = (int) ($lesson->watchTimes ?? 0);
-        $opened = time() <= $endLessonTime && $viewCount <= $maxViews;
+        $opened = $viewCount <= $maxViews;
 
         if (! $opened) {
             abort(403);

@@ -100,7 +100,6 @@ class LessonBigVideoIntegrationTest extends TestCase
             'link' => '',
             'NO' => 10,
             'watchTimes' => 2,
-            'watchIntervalTime' => 7,
             'created_by' => $this->admin->id,
         ]);
 
@@ -141,7 +140,6 @@ class LessonBigVideoIntegrationTest extends TestCase
             'link' => $oldUpload['fileName'],
             'NO' => 11,
             'watchTimes' => 2,
-            'watchIntervalTime' => 7,
             'created_by' => $this->admin->id,
         ]);
 

@@ -2,7 +2,6 @@
 @extends('layout.student')
 @section('content')
     @php
-        $thumbnail = $attachments['thumbnail'][0] ?? null;
         $images = $attachments['images'] ?? [];
         $pdfs = $attachments['pdf'] ?? [];
     @endphp
@@ -37,19 +36,6 @@
                                 </div>
                             @endif
 
-                            @if ($thumbnail)
-                                <div class="admin-lesson-view-section mb-4">
-                                    <h5 class="mb-3">صورة الغلاف</h5>
-                                    <div class="admin-lesson-thumbnail-preview">
-                                        <img
-                                            src="{{ $thumbnail['file'] }}"
-                                            alt="{{ $thumbnail['name'] }}"
-                                            class="img-fluid rounded admin-lesson-thumbnail-img"
-                                        >
-                                    </div>
-                                </div>
-                            @endif
-
                             <div class="admin-lesson-view-section mb-4">
                                 <h5 class="mb-3">فيديو الدرس</h5>
                                 @if ($lesson->opened && $lesson->link)
@@ -58,9 +44,6 @@
                                         controls
                                         preload="metadata"
                                         playsinline
-                                        @if ($thumbnail)
-                                            poster="{{ $thumbnail['file'] }}"
-                                        @endif
                                         src="{{ route('student.video.lesson', $lesson->id) }}"
                                     >
                                         متصفحك لا يدعم تشغيل الفيديو.
@@ -68,9 +51,6 @@
                                 @else
                                     <div class="alert alert-warning mb-0">
                                         الفيديو غير متاح للمشاهدة حالياً
-                                        @if ($lesson->endWatchIntervalTime)
-                                            (متاح حتى: {{ $lesson->endWatchIntervalTime }})
-                                        @endif
                                     </div>
                                 @endif
                             </div>

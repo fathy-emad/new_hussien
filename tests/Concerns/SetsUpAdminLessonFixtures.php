@@ -49,11 +49,9 @@ trait SetsUpAdminLessonFixtures
             'title' => 'Test Lesson',
             'chapter_id' => $this->chapter->id,
             'NO' => 1,
-            'watchIntervalTime' => 7,
             'watchTimes' => 3,
             'info' => 'Lesson description',
             'link' => '',
-            'thumbnail' => '',
             'images' => [],
             'pdf' => [],
         ], $overrides);

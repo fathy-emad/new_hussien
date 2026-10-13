@@ -56,32 +56,16 @@
             @enderror
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="input-block">
-            <label class="form-label" for="watchIntervalTime">فترة المشاهدة بالأيام</label>
-            <input
-                type="number"
-                class="form-control @error('watchIntervalTime') is-invalid @enderror"
-                name="watchIntervalTime"
-                id="watchIntervalTime"
-                value="{{ old('watchIntervalTime', $lesson?->watchIntervalTime) }}"
-                min="0"
-                placeholder="مثال: 7"
-            >
-            @error('watchIntervalTime')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="input-block">
-            <label class="form-label" for="watchTimes">عدد مرات المشاهدة</label>
+            <label class="form-label" for="watchTimes">عدد مرات المشاهدة <span class="text-danger">*</span></label>
             <input
                 type="number"
                 class="form-control @error('watchTimes') is-invalid @enderror"
                 name="watchTimes"
                 id="watchTimes"
                 value="{{ old('watchTimes', $lesson?->watchTimes ?? 0) }}"
+                required
                 min="0"
                 placeholder="مثال: 3"
             >
@@ -141,18 +125,6 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-    </div>
-    <div class="col-12">
-        <x-admin-dropzone
-            id="thumbnail"
-            label="صورة الفيديو (thumbnail)"
-            title="اضغط لإضافة صورة"
-            description="صورة غلاف الدرس"
-        >
-            @error('thumbnail')
-                <div class="text-danger small mt-1">{{ $message }}</div>
-            @enderror
-        </x-admin-dropzone>
     </div>
     <div class="col-12">
         <x-admin-dropzone

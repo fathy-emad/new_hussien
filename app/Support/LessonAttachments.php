@@ -8,14 +8,6 @@ class LessonAttachments
 {
     public static function forLesson(Lesson $lesson, bool $includeVideo = false): array
     {
-        $thumbnail = [];
-        if ($lesson->thumbnail) {
-            $meta = self::publicUploadMeta('uploads/lessons/images', $lesson->thumbnail);
-            if ($meta) {
-                $thumbnail[] = $meta;
-            }
-        }
-
         $images = [];
         foreach (explodeUploadedFilenames($lesson->images) as $image) {
             $meta = self::publicUploadMeta('uploads/lessons/images', $image);
@@ -33,7 +25,6 @@ class LessonAttachments
         }
 
         $attachments = [
-            'thumbnail' => $thumbnail,
             'images' => $images,
             'pdf' => $pdfs,
         ];

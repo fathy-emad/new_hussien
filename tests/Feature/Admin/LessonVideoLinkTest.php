@@ -95,7 +95,6 @@ class LessonVideoLinkTest extends TestCase
             'link' => '',
             'NO' => 2,
             'watchTimes' => 1,
-            'watchIntervalTime' => 5,
             'created_by' => $this->admin->id,
         ]);
 
@@ -123,7 +122,6 @@ class LessonVideoLinkTest extends TestCase
             'link' => '',
             'NO' => 3,
             'watchTimes' => 1,
-            'watchIntervalTime' => 5,
             'created_by' => $this->admin->id,
         ]);
 
@@ -153,7 +151,6 @@ class LessonVideoLinkTest extends TestCase
             'link' => '',
             'NO' => 4,
             'watchTimes' => 1,
-            'watchIntervalTime' => 5,
             'created_by' => $this->admin->id,
         ]);
 
@@ -182,7 +179,6 @@ class LessonVideoLinkTest extends TestCase
             'link' => $oldFile,
             'NO' => 5,
             'watchTimes' => 1,
-            'watchIntervalTime' => 5,
             'created_by' => $this->admin->id,
         ]);
 

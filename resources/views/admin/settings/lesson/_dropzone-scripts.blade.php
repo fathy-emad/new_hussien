@@ -1,6 +1,5 @@
 @php
     $attachments = $attachments ?? [
-        'thumbnail' => [],
         'images' => [],
         'pdf' => [],
         'lessonVideo' => [],
@@ -16,14 +15,6 @@
                 inputName: 'link',
                 linkFieldId: 'lesson_video_link',
                 existingFiles: @json($attachments['lessonVideo'] ?? []),
-            });
-
-            AdminDropzoneUpload.createSingle({
-                elementId: 'thumbnail',
-                storePath: 'lessons/images',
-                inputName: 'thumbnail[]',
-                acceptedFiles: 'image/*',
-                existingFiles: @json($attachments['thumbnail'] ?? []),
             });
 
             AdminDropzoneUpload.createMulti({

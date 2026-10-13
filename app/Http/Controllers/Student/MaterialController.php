@@ -30,19 +30,14 @@ class MaterialController extends Controller
             foreach ($chapter->lessons AS $lesson) {
                 $student_views = Watch::where('student_id', $student_id)->where('lesson_id', $lesson->id)->first();
                 $view = $student_views ? $student_views->times : 0;
-                $startLessonTime = new \DateTime($lesson->created_at->format('d M Y  H:i:s'));
-                $startLessonTime = $startLessonTime->getTimestamp();
-                $endLessonTime = $startLessonTime + ($lesson->watchIntervalTime * 86400);
                 $materials[$chapter->title][] = [
                     'id' => $lesson['id'],
                     'link' => $lesson->link,
                     'lessonNo' => $lesson->NO,
                     'title' => $lesson->title,
-                    'thumbnail' => $lesson->thumbnail,
                     'watchTimes' => $lesson->watchTimes ?: 0,
-                    'endWatchIntervalTime' => date('d M Y  H:i', $endLessonTime),
                     'views' => $view,
-                    'opened' => time() <= $endLessonTime && $lesson->link && $view < $lesson->watchTimes
+                    'opened' => $lesson->link && $view < $lesson->watchTimes
                 ];
             }
         }
@@ -64,12 +59,8 @@ class MaterialController extends Controller
 
         $student_views = Watch::where('student_id', $student_id)->where('lesson_id', $lesson->id)->first();
         $view = $student_views ? $student_views->times : 0;
-        $startLessonTime = new \DateTime($lesson->created_at->format('d M Y  H:i:s'));
-        $startLessonTime = $startLessonTime->getTimestamp();
-        $endLessonTime = $startLessonTime + ($lesson->watchIntervalTime * 86400);
-        $lesson->endWatchIntervalTime = date('d M Y  H:i', $endLessonTime);
         $lesson->view = $view;
-        $lesson->opened = time() <= $endLessonTime && $lesson->link && $view < $lesson->watchTimes;
+        $lesson->opened = $lesson->link && $view < $lesson->watchTimes;
 
         if ($student_views && $view < $lesson->watchTimes){
             $student_views->times = $view + 1;

@@ -95,7 +95,6 @@ class LessonController extends Controller
             $dataLables = [
                 'رقم الدرس',
                 'اسم الدرس',
-                'فترة المشاهدة',
                 'عدد مرات المشاهدة',
                 'وقت الإنشاء',
                 'أنشئ بواسطة',
@@ -108,7 +107,6 @@ class LessonController extends Controller
             foreach ($lessons as $key => $lesson) {
                 $dataRows[$key][] = $lesson->NO;
                 $dataRows[$key][] = $lesson->title;
-                $dataRows[$key][] = $lesson->watchIntervalTime ?? 'لا يوجد';
                 $dataRows[$key][] = $lesson->watchTimes ?? 0;
                 $dataRows[$key][] = $lesson->created_at
                     ? $lesson->created_at->format('d M Y - H:i:s')
@@ -164,10 +162,8 @@ class LessonController extends Controller
         }
 
         $lesson->NO = $request->NO;
-        $lesson->watchIntervalTime = $request->watchIntervalTime;
         $lesson->watchTimes = $request->watchTimes ?? 0;
         $lesson->info = $request->info;
-        $lesson->thumbnail = resolveUploadedFilename($request->thumbnail) ?? '';
         $lesson->images = $this->resolveLessonCommaSeparatedFiles($request->images ?? [], 'lessons/images', 'images');
         $lesson->pdf = $this->resolveLessonCommaSeparatedFiles($request->pdf ?? [], 'lessons/files', 'pdf');
         $lesson->created_by = Auth::guard('admin')->user()->id;
@@ -228,13 +224,8 @@ class LessonController extends Controller
             $lesson->link = $newVideo;
         }
         $lesson->NO = $request->NO;
-        $lesson->watchIntervalTime = $request->watchIntervalTime;
         $lesson->watchTimes = $request->watchTimes ?? $lesson->watchTimes;
         $lesson->info = $request->info;
-        $thumbnail = resolveUploadedFilename($request->thumbnail);
-        if ($thumbnail !== null) {
-            $lesson->thumbnail = $thumbnail;
-        }
 
         $newImages = $this->resolveLessonCommaSeparatedFiles($request->images ?? [], 'lessons/images', 'images');
         $newPdfs = $this->resolveLessonCommaSeparatedFiles($request->pdf ?? [], 'lessons/files', 'pdf');
@@ -377,10 +368,7 @@ class LessonController extends Controller
             VideoStorage::delete(VideoStorage::FOLDER_LESSONS, $video);
         }
 
-        $this->deleteLessonUploads('lessons/images', array_merge(
-            explodeUploadedFilenames($lesson->images),
-            explodeUploadedFilenames($lesson->thumbnail)
-        ));
+        $this->deleteLessonUploads('lessons/images', explodeUploadedFilenames($lesson->images));
         $this->deleteLessonUploads('lessons/files', explodeUploadedFilenames($lesson->pdf));
 
         return redirect()
