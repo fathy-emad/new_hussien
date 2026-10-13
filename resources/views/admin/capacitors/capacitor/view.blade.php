@@ -61,7 +61,9 @@
                                 </div>
 
                                 @if ($hasVideo)
-                                    <x-vimeo-embed :value="$model->link" :title="$model->title" />
+                                    <div class="admin-lesson-view-video">
+                                        <x-vimeo-embed :value="$model->link" :title="$model->title" />
+                                    </div>
                                     <p class="text-muted small mt-2 mb-0">
                                         <strong>قيمة link:</strong> <code>{{ $model->link }}</code>
                                     </p>

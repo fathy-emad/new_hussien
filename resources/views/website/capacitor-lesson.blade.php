@@ -53,7 +53,9 @@
                             @if ($hasVideo)
                                 <div class="mb-4">
                                     <h5 class="mb-3">فيديو الدرس</h5>
-                                    <x-vimeo-embed :value="$lesson->link" :title="$lesson->title" />
+                                    <div class="admin-lesson-view-video">
+                                        <x-vimeo-embed :value="$lesson->link" :title="$lesson->title" />
+                                    </div>
                                 </div>
                             @endif
 

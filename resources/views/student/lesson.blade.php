@@ -39,7 +39,9 @@
                             <div class="admin-lesson-view-section mb-4">
                                 <h5 class="mb-3">فيديو الدرس</h5>
                                 @if ($lesson->opened)
-                                    <x-vimeo-embed :value="$lesson->link" :title="$lesson->title" />
+                                    <div class="admin-lesson-view-video">
+                                        <x-vimeo-embed :value="$lesson->link" :title="$lesson->title" />
+                                    </div>
                                 @else
                                     <div class="alert alert-warning mb-0">
                                         الفيديو غير متاح للمشاهدة حالياً
