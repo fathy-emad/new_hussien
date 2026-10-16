@@ -38,7 +38,7 @@ class MaterialController extends Controller
                     'title' => $lesson->title,
                     'watchTimes' => $lesson->watchTimes ?: 0,
                     'views' => $view,
-                    'opened' => VimeoVideo::hasVideo($lesson->link) && $view < $lesson->watchTimes
+                    'opened' => $lesson->link && ($view < $lesson->watchTimes)
                 ];
             }
         }
@@ -61,13 +61,13 @@ class MaterialController extends Controller
         $student_views = Watch::where('student_id', $student_id)->where('lesson_id', $lesson->id)->first();
         $view = $student_views ? $student_views->times : 0;
         $lesson->view = $view;
-        $lesson->opened = VimeoVideo::hasVideo($lesson->link) && $view < $lesson->watchTimes;
+        $lesson->opened = $lesson->link && ($view < $lesson->watchTimes);
 
-        if ($student_views && $view < $lesson->watchTimes){
+        if ($student_views && ($view < $lesson->watchTimes)){
             $student_views->times = $view + 1;
             $student_views->save();
 
-        } elseif (! $student_views && $view < $lesson->watchTimes){
+        } elseif (! $student_views && ($view < $lesson->watchTimes)){
             $watch = new Watch;
             $watch->student_id = $student_id;
             $watch->lesson_id = $lesson->id;

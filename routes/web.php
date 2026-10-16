@@ -1,13 +1,8 @@
 <?php
 
-use App\Http\Controllers\VideoStreamController;
 use App\Http\Controllers\Website\Welcome;
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/video/website/{file}', [VideoStreamController::class, 'website'])
-    ->where('file', '[a-zA-Z0-9._\-]+')
-    ->name('video.website');
 Route::get('/', [Welcome::class, 'homepage'])->name('home');
 Route::get('/capacitors', [Welcome::class, 'capacitors'])->name('capacitors');
 Route::post('/capacitor', [Welcome::class, 'capacitor'])->name('capacitor');

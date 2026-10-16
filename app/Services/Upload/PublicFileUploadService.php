@@ -11,10 +11,6 @@ class PublicFileUploadService
 {
     public function handle(Request $request, UploadTarget $target): array
     {
-        if ($target->isVideo()) {
-            throw new \InvalidArgumentException('استخدم الرفع على أجزاء للفيديو.');
-        }
-
         /** @var UploadedFile|null $file */
         $file = $request->file('dzFiles');
 

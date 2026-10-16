@@ -163,33 +163,6 @@ if (! function_exists('resolveUploadedFilename')) {
     }
 }
 
-if (! function_exists('resolveStoredVideoFilename')) {
-    /**
-     * Filename for DB (lessons.link) — must exist on videos disk after upload.
-     * Returns basename only, e.g. "1712345678_abc123.mp4"
-     */
-    function resolveStoredVideoFilename(mixed $value, string $folder = 'lessons'): ?string
-    {
-        $fileName = resolveUploadedFilename($value);
-
-        if (! $fileName) {
-            return null;
-        }
-
-        $fileName = basename($fileName);
-
-        if (\App\Support\VideoStorage::exists($folder, $fileName)) {
-            return $fileName;
-        }
-
-        if (is_file(\App\Support\VideoStorage::absolutePath($folder, $fileName))) {
-            return $fileName;
-        }
-
-        return null;
-    }
-}
-
 if (! function_exists('normalizeStoredFilename')) {
     /** One filename from DB (legacy comma-separated lists use first entry). */
     function normalizeStoredFilename(?string $value): ?string
@@ -204,51 +177,6 @@ if (! function_exists('normalizeStoredFilename')) {
         }
 
         return $value !== '' ? $value : null;
-    }
-}
-
-if (! function_exists('websiteSectionIsVideo')) {
-    function websiteSectionIsVideo(int|string $sectionId): bool
-    {
-        return in_array((int) $sectionId, [1, 5], true);
-    }
-}
-
-if (! function_exists('websiteSectionAllowsMultipleImages')) {
-    /** Sections #2, #3, #4 — swiper galleries. */
-    function websiteSectionAllowsMultipleImages(int|string $sectionId): bool
-    {
-        return in_array((int) $sectionId, [2, 3, 4], true);
-    }
-}
-
-if (! function_exists('websiteSectionVideoMaxFiles')) {
-    function websiteSectionVideoMaxFiles(int|string $sectionId): int
-    {
-        return (int) $sectionId === 5 ? 2 : 1;
-    }
-}
-
-if (! function_exists('implodeUploadedFilenamesMax')) {
-    function implodeUploadedFilenamesMax(mixed $value, int $max): string
-    {
-        if (! is_array($value)) {
-            $value = $value !== null && $value !== '' ? [$value] : [];
-        }
-
-        $names = [];
-        foreach ($value as $item) {
-            $item = is_string($item) ? trim($item) : '';
-            if ($item === '') {
-                continue;
-            }
-            $names[] = basename($item);
-            if (count($names) >= $max) {
-                break;
-            }
-        }
-
-        return implode(',', array_values(array_unique($names)));
     }
 }
 

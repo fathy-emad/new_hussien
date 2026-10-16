@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\Auth\Authentication;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\FilesUpload;
-use App\Http\Controllers\VideoStreamController;
 use App\Models\Student;
 use Illuminate\Support\Facades\Route;
 use Ramsey\Uuid\Uuid;
@@ -33,7 +32,6 @@ Route::prefix('admin')->name('admin.')->group(function (){
     Route::middleware("auth.admin:admin")->group(function (){
         Route::post('fileUpload', [FilesUpload::class, 'fileUpload'])->name('fileUpload');
         Route::post('removeFileUploaded', [FilesUpload::class, 'removeFileUploaded'])->name('removeFileUploaded');
-        Route::get('video/preview', [VideoStreamController::class, 'adminPreview'])->name('video.preview');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('notifications', [\App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notifications.index');
         Route::post('notifications/read-all', [\App\Http\Controllers\Admin\NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');

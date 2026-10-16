@@ -29,7 +29,7 @@ class FilesUpload
             report($e);
 
             return response()->json([
-                'message' => 'فشل دمج ملف الفيديو. أعد المحاولة.',
+                'message' => 'فشل رفع الملف. أعد المحاولة.',
             ], 500);
         }
     }
