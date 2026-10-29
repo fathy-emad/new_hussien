@@ -175,7 +175,7 @@
                             <i class="fas fa-times"></i>
                         </a>
                     </div>
-                    @if (Route::is(['home', 'capacitors', 'contact']))
+                    @if (Route::is(['home', 'capacitors', 'contact', 'capacitor_lesson']))
                         @include('layout.partials.website-nav')
                     @else
                     <ul class="main-nav">

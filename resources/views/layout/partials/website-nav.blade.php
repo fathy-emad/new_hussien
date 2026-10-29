@@ -8,7 +8,7 @@
     <li>
         <a href="{{ $homeSection('why-us') }}">لماذا نحن</a>
     </li>
-    <li class="{{ Route::is('capacitors') ? 'active' : '' }}">
+    <li class="{{ Route::is(['capacitors', 'capacitor_lesson']) ? 'active' : '' }}">
         <a href="{{ route('capacitors') }}">دروس Offline</a>
     </li>
     <li>
