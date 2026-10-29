@@ -25,6 +25,8 @@ class PublicFileUploadService
         $disk->makeDirectory($target->folder);
         $disk->putFileAs($target->folder, $file, $fileName);
 
+        $this->makePubliclyWritable($disk->path($target->folder.'/'.$fileName));
+
         return ['fileName' => $fileName];
     }
 
@@ -35,6 +37,33 @@ class PublicFileUploadService
 
         if (Storage::disk($target->disk)->exists($path)) {
             Storage::disk($target->disk)->delete($path);
+        }
+    }
+
+    private function makePubliclyWritable(string $filePath): void
+    {
+        if ($filePath === '' || ! file_exists($filePath)) {
+            return;
+        }
+
+        @chmod($filePath, 0777);
+
+        $uploadsRoot = rtrim(public_path('uploads'), DIRECTORY_SEPARATOR);
+        $dir = dirname($filePath);
+
+        while (str_starts_with($dir, $uploadsRoot)) {
+            @chmod($dir, 0777);
+
+            if ($dir === $uploadsRoot) {
+                break;
+            }
+
+            $parent = dirname($dir);
+            if ($parent === $dir) {
+                break;
+            }
+
+            $dir = $parent;
         }
     }
 }

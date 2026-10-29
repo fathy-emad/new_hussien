@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 class CapacitorOfflineAccess
 {
+    /** Collapse duplicate HTTP hits of the same visit (Chrome prefetch / double GET). */
+    private const DUPLICATE_HIT_SECONDS = 2;
+
     public static function viewCount(CapacitorCard $card, Capacitor $lesson): int
     {
         return (int) CapacitorCardLessonView::query()
@@ -34,16 +37,14 @@ class CapacitorOfflineAccess
 
     public static function recordView(CapacitorCard $card, Capacitor $lesson): void
     {
-        $sessionId = session()->getId();
-
-        DB::transaction(function () use ($card, $lesson, $sessionId) {
+        DB::transaction(function () use ($card, $lesson) {
             $row = CapacitorCardLessonView::query()
                 ->where('capacitor_card_id', $card->id)
                 ->where('capacitor_id', $lesson->id)
                 ->lockForUpdate()
                 ->first();
 
-            if ($row && $row->last_session_id === $sessionId) {
+            if ($row && $row->updated_at && $row->updated_at->gte(now()->subSeconds(self::DUPLICATE_HIT_SECONDS))) {
                 return;
             }
 
@@ -52,11 +53,9 @@ class CapacitorOfflineAccess
                     'capacitor_card_id' => $card->id,
                     'capacitor_id' => $lesson->id,
                     'view_count' => 1,
-                    'last_session_id' => $sessionId,
                 ]);
             } else {
                 $row->view_count = (int) $row->view_count + 1;
-                $row->last_session_id = $sessionId;
                 $row->save();
             }
 
