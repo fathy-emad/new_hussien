@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Models\Capacitor;
 use App\Models\CapacitorCard;
 use App\Models\CapacitorCardLessonView;
+use Illuminate\Support\Facades\DB;
 
 class CapacitorOfflineAccess
 {
@@ -33,18 +34,35 @@ class CapacitorOfflineAccess
 
     public static function recordView(CapacitorCard $card, Capacitor $lesson): void
     {
-        $row = CapacitorCardLessonView::firstOrCreate(
-            [
-                'capacitor_card_id' => $card->id,
-                'capacitor_id' => $lesson->id,
-            ],
-            ['view_count' => 0]
-        );
+        $sessionId = session()->getId();
 
-        $row->increment('view_count');
+        DB::transaction(function () use ($card, $lesson, $sessionId) {
+            $row = CapacitorCardLessonView::query()
+                ->where('capacitor_card_id', $card->id)
+                ->where('capacitor_id', $lesson->id)
+                ->lockForUpdate()
+                ->first();
 
-        if (! $card->visited) {
-            $card->forceFill(['visited' => now()])->save();
-        }
+            if ($row && $row->last_session_id === $sessionId) {
+                return;
+            }
+
+            if (! $row) {
+                CapacitorCardLessonView::create([
+                    'capacitor_card_id' => $card->id,
+                    'capacitor_id' => $lesson->id,
+                    'view_count' => 1,
+                    'last_session_id' => $sessionId,
+                ]);
+            } else {
+                $row->view_count = (int) $row->view_count + 1;
+                $row->last_session_id = $sessionId;
+                $row->save();
+            }
+
+            if (! $card->visited) {
+                $card->forceFill(['visited' => now()])->save();
+            }
+        });
     }
 }

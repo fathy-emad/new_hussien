@@ -11,6 +11,7 @@ class CapacitorCardLessonView extends Model
         'capacitor_card_id',
         'capacitor_id',
         'view_count',
+        'last_session_id',
     ];
 
     public function card(): BelongsTo
